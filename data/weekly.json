@@ -1,0 +1,185 @@
+{
+  "generated_at": "2026-05-13T12:00:00Z",
+  "week_of": "2026-05-12",
+  "total_checked": 50,
+  "total_indie": 8,
+  "used_ai": true,
+  "games": [
+    {
+      "appid": 3892270,
+      "name": "Gamble With Your Friends",
+      "url": "https://store.steampowered.com/app/3892270/",
+      "header_image": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3892270/header.jpg",
+      "short_description": "Roll the dice, bet on your friends, and play wild minigames in this chaotic party game for 2-8 players.",
+      "developer": "Peperoni Games",
+      "publisher": "Peperoni Games",
+      "genres": ["Casual", "Indie"],
+      "top_tags": ["Party Game", "Multiplayer", "Gambling", "Funny", "Co-op", "Casual", "Mini Games", "Social Deduction", "Board Game", "Local Co-Op"],
+      "release_date": "May 1, 2026",
+      "price": "$7.99",
+      "rank": 4,
+      "source": "weekly_top_sellers",
+      "indie_confidence": "high",
+      "analysis": {
+        "gameplay_tags": ["派对游戏", "赌博/概率机制", "多人社交", "小游戏合集"],
+        "hook": "用真金白银的赌注感把朋友间的派对游戏推到极限——赌的不是钱，是友情",
+        "formula": "派对小游戏 + 赌注/下注系统 + 社交欺骗",
+        "trend_category": "概率/赌博机制热"
+      }
+    },
+    {
+      "appid": 3404260,
+      "name": "Dead as Disco",
+      "url": "https://store.steampowered.com/app/3404260/",
+      "header_image": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3404260/header.jpg",
+      "short_description": "A rhythm beat-'em-up roguelite where every punch, kick and combo hits harder when it lands on the beat.",
+      "developer": "Glee-Cheese Studio",
+      "publisher": "Glee-Cheese Studio",
+      "genres": ["Action", "Indie"],
+      "top_tags": ["Rhythm", "Beat 'Em Up", "Roguelite", "Action", "Indie", "Colorful", "Music", "Combat", "Hack and Slash", "Co-op"],
+      "release_date": "May 5, 2026",
+      "price": "$24.99",
+      "rank": 7,
+      "source": "weekly_top_sellers",
+      "indie_confidence": "high",
+      "analysis": {
+        "gameplay_tags": ["节奏动作", "Beat 'em up", "Roguelite", "音乐驱动战斗"],
+        "hook": "踩着节拍出拳伤害翻倍——Hi-Fi Rush的节奏战斗理念，做成了横版清关Roguelite",
+        "formula": "节奏战斗 + 清版动作 + Roguelite",
+        "trend_category": "Roguelike变体热"
+      }
+    },
+    {
+      "appid": 2868840,
+      "name": "Slay the Spire 2",
+      "url": "https://store.steampowered.com/app/2868840/",
+      "header_image": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2868840/header.jpg",
+      "short_description": "The sequel to the genre-defining deckbuilder roguelike. Craft powerful decks, face deadly foes, and ascend the Spire once more.",
+      "developer": "Mega Crit",
+      "publisher": "Mega Crit",
+      "genres": ["Indie", "Strategy"],
+      "top_tags": ["Roguelike Deckbuilder", "Card Game", "Deckbuilder", "Roguelike", "Strategy", "Turn-Based", "Singleplayer", "Indie", "Card Battler", "Difficult"],
+      "release_date": "Mar 5, 2026",
+      "price": "$24.99",
+      "rank": null,
+      "source": "popular_new",
+      "indie_confidence": "high",
+      "analysis": {
+        "gameplay_tags": ["Roguelike", "卡牌构筑", "回合制策略", "数值优化"],
+        "hook": "定义了整个品类的开山之作的正统续作——在已被验证的核心循环上做深度扩展",
+        "formula": "卡牌构筑 + Roguelike + 策略优化",
+        "trend_category": "Roguelike变体热"
+      }
+    },
+    {
+      "appid": 2253100,
+      "name": "Everwind",
+      "url": "https://store.steampowered.com/app/2253100/",
+      "header_image": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2253100/header.jpg",
+      "short_description": "A cozy open-world farming adventure where you restore a sky-island community, grow magical crops, and befriend floating creatures.",
+      "developer": "Pounce Light",
+      "publisher": "Pounce Light",
+      "genres": ["Adventure", "Indie", "RPG", "Simulation"],
+      "top_tags": ["Farming Sim", "Open World", "Cozy", "Relaxing", "Life Sim", "Exploration", "Crafting", "Building", "Colorful", "Singleplayer"],
+      "release_date": "Mar 17, 2026",
+      "price": "$24.99",
+      "rank": null,
+      "source": "popular_new",
+      "indie_confidence": "high",
+      "analysis": {
+        "gameplay_tags": ["农场模拟", "开放世界探索", "舒适生活模拟", "社区建设"],
+        "hook": "把Stardew Valley搬到天空浮岛上——种的是魔法作物，养的是漂浮生物",
+        "formula": "农场经营 + 天空探索 + 社区修复",
+        "trend_category": "舒适模拟热"
+      }
+    },
+    {
+      "appid": 3164500,
+      "name": "Schedule I",
+      "url": "https://store.steampowered.com/app/3164500/",
+      "header_image": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3164500/header.jpg",
+      "short_description": "Build your empire in this drug dealer simulator. Mix products, manage supply chains, evade the law, and expand your territory in a detailed open world.",
+      "developer": "TVGS",
+      "publisher": "TVGS",
+      "genres": ["Action", "Adventure", "Indie", "Simulation"],
+      "top_tags": ["Simulation", "Open World", "Crime", "Management", "Indie", "Sandbox", "Singleplayer", "Crafting", "Economy", "Dark Humor"],
+      "release_date": "Mar 24, 2025",
+      "price": "$19.99",
+      "rank": null,
+      "source": "popular_new",
+      "indie_confidence": "high",
+      "analysis": {
+        "gameplay_tags": ["犯罪模拟", "经营管理", "沙盒开放世界", "供应链系统"],
+        "hook": "毒品版「模拟经营」——从配方研发到供应链管理到地盘扩张的完整犯罪帝国体验",
+        "formula": "犯罪题材 + 模拟经营 + 开放世界",
+        "trend_category": "灰色题材模拟热"
+      }
+    },
+    {
+      "appid": 0,
+      "name": "Gambonanza",
+      "url": "https://store.steampowered.com/app/Gambonanza/",
+      "header_image": "",
+      "short_description": "A chess-themed roguelike deckbuilder where chess pieces become cards, and each move is a strategic gamble.",
+      "developer": "独立开发者",
+      "publisher": "独立开发者",
+      "genres": ["Strategy", "Indie"],
+      "top_tags": ["Chess", "Roguelike", "Deckbuilder", "Strategy", "Turn-Based", "Card Game"],
+      "release_date": "Demo Available",
+      "price": "Demo",
+      "rank": null,
+      "source": "social_media_trending",
+      "indie_confidence": "high",
+      "analysis": {
+        "gameplay_tags": ["国际象棋", "Roguelike卡牌构筑", "策略", "概率博弈"],
+        "hook": "把国际象棋的棋子当卡牌来构筑deck——走棋变成了Roguelike的战斗推进系统",
+        "formula": "国际象棋规则 + 卡牌构筑 + Roguelike",
+        "trend_category": "Roguelike变体热"
+      }
+    },
+    {
+      "appid": 1,
+      "name": "Oddcore",
+      "url": "https://store.steampowered.com/app/Oddcore/",
+      "header_image": "",
+      "short_description": "A boomer shooter set in liminal spaces. Survive waves, earn tokens, gamble at the arcade, and upgrade your gear in an unsettling hub world.",
+      "developer": "独立开发者",
+      "publisher": "独立开发者",
+      "genres": ["Action", "Indie"],
+      "top_tags": ["Boomer Shooter", "FPS", "Horror", "Roguelite", "Liminal", "Arcade", "Action"],
+      "release_date": "2026",
+      "price": "TBA",
+      "rank": null,
+      "source": "media_recommended",
+      "indie_confidence": "high",
+      "analysis": {
+        "gameplay_tags": ["Boomer Shooter", "Liminal Space美学", "街机代币经济", "Roguelike循环"],
+        "hook": "射击打怪赚代币→老虎机赌装备→继续打——用赌博奖励系统驱动FPS的刷刷刷循环",
+        "formula": "快节奏射击 + 代币赌博经济 + 恐怖美学",
+        "trend_category": "概率/赌博机制热"
+      }
+    },
+    {
+      "appid": 2,
+      "name": "Gambler's Table",
+      "url": "https://store.steampowered.com/app/GamblersTable/",
+      "header_image": "",
+      "short_description": "Flip coins, hire minions, and watch numbers go up in this minimalist idle game built around pure probability mechanics.",
+      "developer": "独立开发者",
+      "publisher": "独立开发者",
+      "genres": ["Casual", "Indie", "Strategy"],
+      "top_tags": ["Idle", "Clicker", "Gambling", "Strategy", "Casual", "Relaxing", "Numbers"],
+      "release_date": "2026",
+      "price": "TBA",
+      "rank": null,
+      "source": "media_recommended",
+      "indie_confidence": "high",
+      "analysis": {
+        "gameplay_tags": ["翻硬币核心玩法", "数值放置", "资源管理", "概率博弈"],
+        "hook": "把赌博简化到极致——只有翻硬币，但用数值增长的多巴胺让你停不下来",
+        "formula": "翻硬币 + 放置数值增长 + 仆从雇佣",
+        "trend_category": "概率/赌博机制热"
+      }
+    }
+  ]
+}

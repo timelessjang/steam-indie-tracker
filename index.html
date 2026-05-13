@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Steam Indie Tracker — 每周独立游戏玩法趋势</title>
+<meta name="description" content="自动追踪Steam每周爆款独立游戏，AI拆解玩法组合，发现设计趋势。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --bg-deep: #0a0a0f;
+  --bg-card: #12121a;
+  --bg-card-hover: #1a1a25;
+  --bg-surface: #1e1e2a;
+  --border: rgba(255,255,255,0.06);
+  --border-hover: rgba(255,255,255,0.12);
+  --text-primary: #e8e6e3;
+  --text-secondary: #8a8a9a;
+  --text-muted: #55556a;
+  --accent-fire: #ff6b35;
+  --accent-electric: #5b7fff;
+  --accent-lime: #8eff65;
+  --accent-violet: #b18cff;
+  --accent-rose: #ff6b8a;
+  --accent-gold: #ffc857;
+  --accent-cyan: #4de8d0;
+  --font-body: 'DM Sans', 'Noto Sans SC', sans-serif;
+  --font-mono: 'Space Mono', 'Noto Sans SC', monospace;
+  --font-cn: 'Noto Sans SC', sans-serif;
+}
+
+html { scroll-behavior: smooth }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- NOISE OVERLAY --- */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px;
+}
+
+.container { max-width: 900px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1 }
+
+/* --- HEADER --- */
+header {
+  padding: 60px 0 40px;
+  border-bottom: 1px solid var(--border);
+}
+
+.header-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent-electric);
+  margin-bottom: 16px;
+}
+
+h1 {
+  font-family: var(--font-cn);
+  font-weight: 700;
+  font-size: clamp(28px, 5vw, 42px);
+  line-height: 1.2;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.header-desc {
+  font-size: 15px;
+  color: var(--text-secondary);
+  max-width: 600px;
+  line-height: 1.7;
+  font-family: var(--font-cn);
+}
+
+/* --- STATS BAR --- */
+.stats-bar {
+  display: flex;
+  gap: 32px;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: var(--font-cn);
+  letter-spacing: 0.5px;
+}
+
+/* --- TREND INSIGHT --- */
+.trend-insight {
+  margin: 32px 0;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, rgba(91,127,255,0.06) 0%, rgba(177,140,255,0.04) 100%);
+  border: 1px solid rgba(91,127,255,0.12);
+  border-radius: 12px;
+}
+
+.trend-insight-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent-electric);
+  margin-bottom: 10px;
+}
+
+.trend-insight-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  font-family: var(--font-cn);
+}
+
+/* --- FILTER PILLS --- */
+.filters {
+  display: flex;
+  gap: 8px;
+  padding: 24px 0 8px;
+  flex-wrap: wrap;
+}
+
+.filter-pill {
+  font-family: var(--font-cn);
+  font-size: 13px;
+  padding: 6px 16px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.filter-pill:hover { border-color: var(--border-hover); color: var(--text-primary) }
+.filter-pill.active {
+  background: var(--accent-electric);
+  border-color: var(--accent-electric);
+  color: #fff;
+}
+
+/* --- GAME CARDS --- */
+.games-list { padding: 16px 0 60px; display: flex; flex-direction: column; gap: 16px }
+
+.game-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  transition: all 0.25s ease;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+
+.game-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--card-accent, var(--accent-electric)), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.game-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+}
+
+.game-card:hover::before { opacity: 1 }
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.card-title-group { flex: 1; min-width: 0 }
+
+.card-title {
+  font-size: 18px;
+  font-weight: 700;
+  font-family: var(--font-body);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-title a {
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.card-title a:hover { color: var(--accent-electric) }
+
+.card-meta {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-family: var(--font-cn);
+}
+
+.rank-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.rank-badge.top10 { background: rgba(255,107,53,0.12); color: var(--accent-fire) }
+.rank-badge.trending { background: rgba(142,255,101,0.1); color: var(--accent-lime) }
+.rank-badge.media { background: rgba(177,140,255,0.1); color: var(--accent-violet) }
+.rank-badge.demo { background: rgba(255,200,87,0.1); color: var(--accent-gold) }
+
+/* --- TAGS --- */
+.tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.tag {
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-family: var(--font-cn);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Tag colors cycle through a palette */
+.tag-0 { background: rgba(91,127,255,0.12); color: #8aadff }
+.tag-1 { background: rgba(177,140,255,0.12); color: #c9adff }
+.tag-2 { background: rgba(77,232,208,0.1); color: #6aecd6 }
+.tag-3 { background: rgba(255,107,138,0.1); color: #ff8da8 }
+.tag-4 { background: rgba(255,200,87,0.1); color: #ffd47a }
+
+/* --- FORMULA --- */
+.formula-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.formula-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.formula-text {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent-cyan);
+  font-weight: 700;
+}
+
+/* --- DESCRIPTION --- */
+.card-hook {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-family: var(--font-cn);
+}
+
+.trend-label {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: var(--font-cn);
+  margin-top: 10px;
+  background: rgba(255,200,87,0.08);
+  color: var(--accent-gold);
+  border: 1px solid rgba(255,200,87,0.15);
+}
+
+/* --- FOOTER --- */
+footer {
+  padding: 32px 0;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+footer p {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: var(--font-cn);
+  line-height: 1.8;
+}
+
+footer a { color: var(--accent-electric); text-decoration: none }
+footer a:hover { text-decoration: underline }
+
+/* --- LOADING --- */
+.loading {
+  text-align: center;
+  padding: 80px 0;
+  color: var(--text-muted);
+  font-family: var(--font-cn);
+}
+
+.loading-spinner {
+  width: 32px; height: 32px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent-electric);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin { to { transform: rotate(360deg) } }
+
+/* --- EMPTY STATE --- */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+  font-family: var(--font-cn);
+}
+
+/* --- ANIMATIONS --- */
+.game-card {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.4s ease forwards;
+}
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0) }
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 600px) {
+  .container { padding: 0 16px }
+  header { padding: 40px 0 28px }
+  .stats-bar { gap: 20px }
+  .game-card { padding: 18px }
+  .card-top { flex-direction: column; gap: 8px }
+  .card-title { font-size: 16px }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="header-eyebrow">Steam Indie Tracker</div>
+    <h1>每周独立游戏<br>玩法趋势追踪</h1>
+    <p class="header-desc">
+      自动追踪 Steam 每周爆款独立游戏，AI 拆解核心玩法组合，发现下一个「吸血鬼幸存者」式的设计灵感。
+    </p>
+  </header>
+
+  <div class="stats-bar" id="stats-bar">
+    <div class="stat">
+      <span class="stat-value" id="stat-count">—</span>
+      <span class="stat-label">本周 indie 上榜</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value" id="stat-trend">—</span>
+      <span class="stat-label">最热趋势</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value" id="stat-date">—</span>
+      <span class="stat-label">数据更新</span>
+    </div>
+  </div>
+
+  <div class="trend-insight" id="trend-insight" style="display:none">
+    <div class="trend-insight-title">▸ 本周趋势洞察</div>
+    <p class="trend-insight-text" id="trend-insight-text"></p>
+  </div>
+
+  <div class="filters" id="filters"></div>
+
+  <div class="games-list" id="games-list">
+    <div class="loading">
+      <div class="loading-spinner"></div>
+      <p>正在加载本周数据...</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>
+      Steam Indie Tracker · 数据来源: Steam API + SteamSpy · 玩法分析: Claude AI<br>
+      每周二自动更新 · <a href="https://github.com" target="_blank">GitHub</a>
+    </p>
+  </footer>
+</div>
+
+<script>
+const ACCENT_COLORS = [
+  '--accent-electric', '--accent-violet', '--accent-cyan',
+  '--accent-rose', '--accent-gold', '--accent-lime', '--accent-fire'
+];
+
+async function loadData() {
+  const listEl = document.getElementById('games-list');
+
+  try {
+    const resp = await fetch('data/weekly.json');
+    if (!resp.ok) throw new Error('Failed to load data');
+    const data = await resp.json();
+
+    // Update stats
+    document.getElementById('stat-count').textContent = data.total_indie;
+    document.getElementById('stat-date').textContent = data.week_of;
+
+    // Calculate top trend
+    const trendCounts = {};
+    data.games.forEach(g => {
+      const cat = g.analysis?.trend_category;
+      if (cat && cat !== '待分析') {
+        trendCounts[cat] = (trendCounts[cat] || 0) + 1;
+      }
+    });
+    const topTrend = Object.entries(trendCounts).sort((a,b) => b[1] - a[1])[0];
+    document.getElementById('stat-trend').textContent = topTrend ? topTrend[0] : '—';
+
+    // Generate trend insight
+    if (topTrend) {
+      const insightEl = document.getElementById('trend-insight');
+      insightEl.style.display = 'block';
+      document.getElementById('trend-insight-text').textContent = generateInsight(data.games, trendCounts);
+    }
+
+    // Build filter pills
+    const allCategories = [...new Set(data.games.map(g => g.analysis?.trend_category).filter(c => c && c !== '待分析'))];
+    buildFilters(allCategories, data.games);
+
+    // Render games
+    renderGames(data.games);
+
+  } catch (err) {
+    listEl.innerHTML = `<div class="empty-state">
+      <p>暂无数据</p>
+      <p style="margin-top:8px;font-size:13px">请先运行 <code style="background:var(--bg-surface);padding:2px 8px;border-radius:4px">python scripts/fetch.py</code> 生成数据</p>
+    </div>`;
+    console.error(err);
+  }
+}
+
+function generateInsight(games, trendCounts) {
+  const sorted = Object.entries(trendCounts).sort((a,b) => b[1] - a[1]);
+  if (sorted.length === 0) return '';
+
+  const parts = [];
+  sorted.forEach(([cat, count]) => {
+    parts.push(`「${cat}」(${count}款)`);
+  });
+
+  const topGames = games.filter(g => g.analysis?.trend_category === sorted[0][0]).map(g => g.name);
+  return `本周趋势分布：${parts.join('、')}。`
+    + ` 其中${sorted[0][0]}表现最强，代表作品：${topGames.join('、')}。`
+    + (sorted.length > 1 ? ` ${sorted[1][0]}紧随其后。` : '');
+}
+
+function buildFilters(categories, games) {
+  const container = document.getElementById('filters');
+  container.innerHTML = '';
+
+  const allPill = document.createElement('button');
+  allPill.className = 'filter-pill active';
+  allPill.textContent = `全部 (${games.length})`;
+  allPill.onclick = () => {
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    allPill.classList.add('active');
+    renderGames(games);
+  };
+  container.appendChild(allPill);
+
+  categories.forEach(cat => {
+    const count = games.filter(g => g.analysis?.trend_category === cat).length;
+    const pill = document.createElement('button');
+    pill.className = 'filter-pill';
+    pill.textContent = `${cat} (${count})`;
+    pill.onclick = () => {
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      renderGames(games.filter(g => g.analysis?.trend_category === cat));
+    };
+    container.appendChild(pill);
+  });
+}
+
+function renderGames(games) {
+  const listEl = document.getElementById('games-list');
+  listEl.innerHTML = '';
+
+  if (games.length === 0) {
+    listEl.innerHTML = '<div class="empty-state"><p>没有符合条件的游戏</p></div>';
+    return;
+  }
+
+  games.forEach((game, i) => {
+    const card = document.createElement('div');
+    card.className = 'game-card';
+    card.style.animationDelay = `${i * 0.06}s`;
+    card.style.setProperty('--card-accent',
+      `var(${ACCENT_COLORS[i % ACCENT_COLORS.length]})`);
+
+    // Rank badge
+    let badgeHTML = '';
+    if (game.rank && game.rank <= 10) {
+      badgeHTML = `<span class="rank-badge top10">#${game.rank} 周榜</span>`;
+    } else if (game.source === 'social_media_trending') {
+      badgeHTML = '<span class="rank-badge demo">Demo 热门</span>';
+    } else if (game.source === 'media_recommended') {
+      badgeHTML = '<span class="rank-badge media">媒体热推</span>';
+    } else if (game.source === 'popular_new') {
+      badgeHTML = '<span class="rank-badge trending">热门新品</span>';
+    }
+
+    // Tags
+    const tags = game.analysis?.gameplay_tags || [];
+    const tagsHTML = tags.map((t, j) =>
+      `<span class="tag tag-${j % 5}">${t}</span>`
+    ).join('');
+
+    // Formula
+    const formula = game.analysis?.formula || '';
+    const hook = game.analysis?.hook || game.short_description;
+    const trendCat = game.analysis?.trend_category;
+
+    const steamUrl = game.url || `https://store.steampowered.com/app/${game.appid}/`;
+
+    card.innerHTML = `
+      <div class="card-top">
+        <div class="card-title-group">
+          <div class="card-title">
+            <a href="${steamUrl}" target="_blank" rel="noopener">${game.name}</a>
+          </div>
+          <div class="card-meta">${game.developer} · ${game.release_date} · ${game.price}</div>
+        </div>
+        ${badgeHTML}
+      </div>
+      <div class="tags-row">${tagsHTML}</div>
+      ${formula ? `<div class="formula-row">
+        <span class="formula-label">玩法公式</span>
+        <span class="formula-text">${formula}</span>
+      </div>` : ''}
+      <p class="card-hook">${hook}</p>
+      ${trendCat && trendCat !== '待分析' ? `<span class="trend-label">${trendCat}</span>` : ''}
+    `;
+
+    listEl.appendChild(card);
+  });
+}
+
+// Load on page ready
+loadData();
+</script>
+</body>
+</html>
