@@ -561,8 +561,16 @@ def main():
     with open(archive_path, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
 
+    # Update archive index (lists all available weeks for the frontend)
+    archive_files = [f for f in os.listdir(OUTPUT_DIR) if f.startswith("archive_") and f.endswith(".json")]
+    archive_weeks = sorted([f.replace("archive_", "").replace(".json", "") for f in archive_files])
+    index_path = os.path.join(OUTPUT_DIR, "archive_index.json")
+    with open(index_path, "w", encoding="utf-8") as f:
+        json.dump({"weeks": archive_weeks}, f, ensure_ascii=False, indent=2)
+
     print(f"\n  Saved to {output_path}")
     print(f"  Archived to {archive_path}")
+    print(f"  Index updated: {len(archive_weeks)} weeks tracked")
     print(f"\n{'=' * 60}")
     print(f"Done! {len(indie_games)} indie games analyzed.")
     print(f"{'=' * 60}")
