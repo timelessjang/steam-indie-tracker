@@ -34,10 +34,9 @@ KNOWN_AAA_PUBLISHERS = {
     "mihoyo", "hoyoverse", "cognosphere", "netease", "tencent",
     "deep silver", "thq nordic", "focus entertainment", "505 games",
     "paradox interactive", "nacon", "team17", "devolver digital",
-    "annapurna interactive",  # these last few are indie publishers but well-known
+    "annapurna interactive",
 }
 
-# Large publishers that sometimes publish indie-ish games - we keep them but flag
 INDIE_FRIENDLY_PUBLISHERS = {
     "devolver digital", "annapurna interactive", "team17", "raw fury",
     "humble games", "tinybuild", "daedalic entertainment",
@@ -71,14 +70,8 @@ def fetch_weekly_top_sellers():
         print("  ERROR: Could not fetch RSS feed")
         return []
 
-    # Parse RSS/RDF feed
     games = []
     root = ET.fromstring(xml_text)
-    ns = {
-        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-        "": "http://purl.org/rss/1.0/",
-        "content": "http://purl.org/rss/1.0/modules/content/",
-    }
 
     for item in root.findall("{http://purl.org/rss/1.0/}item"):
         title_el = item.find("{http://purl.org/rss/1.0/}title")
@@ -88,12 +81,10 @@ def fetch_weekly_top_sellers():
 
         title = title_el.text or ""
         link = link_el.text or ""
-        # Extract rank and clean title: "#1 - Counter-Strike 2"
         rank_match = re.match(r"#(\d+)\s*-\s*(.+)", title)
         rank = int(rank_match.group(1)) if rank_match else 0
         clean_title = rank_match.group(2).strip() if rank_match else title.strip()
 
-        # Extract appid from URL
         appid_match = re.search(r"/app/(\d+)/", link)
         appid = int(appid_match.group(1)) if appid_match else None
 
@@ -123,22 +114,18 @@ def fetch_popular_new_releases():
         return []
 
     games = []
-    # The response is HTML with embedded game data, extract appids from links
     appid_pattern = re.compile(r"/app/(\d+)/")
     name_pattern = re.compile(r'class="title">([^<]+)<')
 
-    # Try to parse as JSON first
     try:
         data = json.loads(text)
         if "items" in data:
             for item in data["items"]:
                 appid_match = appid_pattern.search(item.get("logo", "") + item.get("name", ""))
                 if not appid_match:
-                    # Try extracting from the HTML content
                     appid_match = appid_pattern.search(str(item))
                 if appid_match:
                     appid = int(appid_match.group(1))
-                    # Extract name from HTML
                     name = ""
                     name_match = name_pattern.search(str(item))
                     if name_match:
@@ -149,7 +136,6 @@ def fetch_popular_new_releases():
                         "source": "popular_new",
                     })
     except json.JSONDecodeError:
-        # Parse as HTML
         for m in appid_pattern.finditer(text):
             appid = int(m.group(1))
             if not any(g["appid"] == appid for g in games):
@@ -189,7 +175,6 @@ def fetch_steamspy_data(appid):
 
     try:
         data = json.loads(text)
-        # SteamSpy sometimes returns wrong app data, verify appid
         if data.get("appid") == appid:
             return data
     except json.JSONDecodeError:
@@ -209,29 +194,22 @@ def is_indie_game(details, steamspy_data=None):
     developers = [d.lower() for d in details.get("developers", [])]
     publishers = [p.lower() for p in details.get("publishers", [])]
 
-    # Check if tagged as indie
     has_indie_genre = "indie" in genres
 
-    # Check publisher against known AAA
     is_aaa_publisher = any(
         pub in KNOWN_AAA_PUBLISHERS
         for pub in publishers
     )
 
-    # Check if it's F2P (many F2P games are gacha/live service, not indie-spirited)
     is_free = details.get("is_free", False)
 
-    # Check price - most indie games are under $40
     price_cents = 0
     if "price_overview" in details:
         price_cents = details["price_overview"].get("initial", 0)
 
-    # Check release date - we want recent releases
     release_info = details.get("release_date", {})
     is_coming_soon = release_info.get("coming_soon", False)
-    release_date_str = release_info.get("date", "")
 
-    # Decision logic
     if is_aaa_publisher and not has_indie_genre:
         return False, "high", f"AAA publisher: {', '.join(publishers)}"
 
@@ -239,12 +217,10 @@ def is_indie_game(details, steamspy_data=None):
         return True, "high", "tagged indie + non-AAA publisher"
 
     if has_indie_genre and is_aaa_publisher:
-        # Some AAA publishers publish indie games
         if any(pub in INDIE_FRIENDLY_PUBLISHERS for pub in publishers):
             return True, "medium", f"indie tag + indie-friendly publisher"
         return False, "medium", f"indie tag but AAA publisher: {', '.join(publishers)}"
 
-    # Not tagged indie but small publisher
     if not is_aaa_publisher and price_cents > 0 and price_cents <= 3999:
         return True, "low", "non-AAA, reasonable price, but no indie tag"
 
@@ -322,7 +298,6 @@ Developer: {g.get('developer', 'N/A')}
             if block.get("type") == "text":
                 text += block["text"]
 
-        # Clean and parse JSON
         text = text.strip()
         if text.startswith("```"):
             text = re.sub(r"^```\w*\n?", "", text)
@@ -342,7 +317,6 @@ def generate_fallback_analysis(game):
     tags = game.get("top_tags", [])
     genres = game.get("genres", [])
 
-    # Map common English tags to Chinese gameplay labels
     tag_map = {
         "roguelike": "Roguelike",
         "roguelite": "Roguelite",
@@ -462,18 +436,17 @@ def main():
 
     for appid, game_info in list(all_appids.items()):
         checked += 1
-        if checked > 60:  # Safety limit
+        if checked > 60:
             break
 
         print(f"  [{checked}/{min(len(all_appids), 60)}] Checking {game_info.get('name', appid)}...")
-        time.sleep(0.5)  # Rate limit: Steam allows ~200 req / 5 min
+        time.sleep(0.5)
 
         details = fetch_app_details(appid)
         if not details:
             print(f"    Skipped: could not fetch details")
             continue
 
-        # Update name if we didn't have it
         if not game_info.get("name"):
             game_info["name"] = details.get("name", f"App {appid}")
 
@@ -484,20 +457,18 @@ def main():
             continue
 
         # Get SteamSpy tags
-        time.sleep(1)  # SteamSpy rate limit
+        time.sleep(1)
         spy_data = fetch_steamspy_data(appid)
         top_tags = []
         if spy_data and "tags" in spy_data:
             tags_raw = spy_data["tags"]
             if isinstance(tags_raw, dict):
-                tags_raw = spy_data["tags"]
-            if isinstance(tags_raw, dict):
                 sorted_tags = sorted(tags_raw.items(), key=lambda x: x[1], reverse=True)
                 top_tags = [t[0] for t in sorted_tags[:15]]
-                elif isinstance(tags_raw, list):
-                top_tags = tags_raw[:15]
             elif isinstance(tags_raw, list):
                 top_tags = tags_raw[:15]
+            else:
+                top_tags = []
 
         # Extract useful fields
         genres = [g["description"] for g in details.get("genres", [])]
@@ -568,8 +539,8 @@ def main():
     with open(archive_path, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
 
-    # Update archive index (lists all available weeks for the frontend)
-    archive_files = [f for f in os.listdir(OUTPUT_DIR) if f.startswith("archive_") and f.endswith(".json")]
+    # Update archive index
+    archive_files = [f for f in os.listdir(OUTPUT_DIR) if f.startswith("archive_") and f.endswith(".json") and f != "archive_index.json"]
     archive_weeks = sorted([f.replace("archive_", "").replace(".json", "") for f in archive_files])
     index_path = os.path.join(OUTPUT_DIR, "archive_index.json")
     with open(index_path, "w", encoding="utf-8") as f:
