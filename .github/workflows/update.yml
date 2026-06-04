@@ -12,6 +12,9 @@ permissions:
 jobs:
   fetch:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONUTF8: "1"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -20,6 +23,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      - name: Run tests
+        run: python -m unittest discover -s tests -v
 
       - name: Run fetch script
         env:

@@ -45,6 +45,13 @@ INDIE_FRIENDLY_PUBLISHERS = {
 OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
 
 
+def configure_console():
+    """Keep game titles and analysis text printable on all runners."""
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
+
+
 def fetch_url(url, retries=3, delay=1.5):
     """Fetch URL with retries and rate limiting."""
     for attempt in range(retries):
@@ -113,8 +120,17 @@ def fetch_popular_new_releases():
         print("  ERROR: Could not fetch popular new releases")
         return []
 
+    games = parse_popular_new_releases(text)
+    print(f"  Found {len(games)} games in popular new releases")
+    return games
+
+
+def parse_popular_new_releases(text):
+    """Parse Steam search JSON/HTML into a deduplicated app list."""
     games = []
-    appid_pattern = re.compile(r"/app/(\d+)/")
+    # Search results currently use image URLs like /steam/apps/730/..., while
+    # older responses and HTML links use /app/730/.
+    appid_pattern = re.compile(r"/apps?/(\d+)(?:/|$)")
     name_pattern = re.compile(r'class="title">([^<]+)<')
 
     try:
@@ -126,15 +142,16 @@ def fetch_popular_new_releases():
                     appid_match = appid_pattern.search(str(item))
                 if appid_match:
                     appid = int(appid_match.group(1))
-                    name = ""
-                    name_match = name_pattern.search(str(item))
-                    if name_match:
-                        name = name_match.group(1)
-                    games.append({
-                        "appid": appid,
-                        "name": name,
-                        "source": "popular_new",
-                    })
+                    name = item.get("name", "")
+                    if "<" in name:
+                        name_match = name_pattern.search(name)
+                        name = name_match.group(1) if name_match else ""
+                    if not any(g["appid"] == appid for g in games):
+                        games.append({
+                            "appid": appid,
+                            "name": name,
+                            "source": "popular_new",
+                        })
     except json.JSONDecodeError:
         for m in appid_pattern.finditer(text):
             appid = int(m.group(1))
@@ -145,7 +162,6 @@ def fetch_popular_new_releases():
                     "source": "popular_new",
                 })
 
-    print(f"  Found {len(games)} games in popular new releases")
     return games
 
 
@@ -403,6 +419,8 @@ def generate_fallback_analysis(game):
 
 
 def main():
+    configure_console()
+
     parser = argparse.ArgumentParser(description="Steam Indie Tracker - Fetch & Analyze")
     parser.add_argument("--no-ai", action="store_true", help="Skip Claude API analysis")
     parser.add_argument("--anthropic-key", type=str, help="Anthropic API key")
@@ -428,6 +446,10 @@ def main():
             all_appids[g["appid"]] = g
 
     print(f"\n  Total unique games to check: {len(all_appids)}")
+    if not all_appids:
+        raise RuntimeError(
+            "No games were returned by Steam sources; refusing to overwrite existing data."
+        )
 
     # Step 2: Fetch details and filter for indie
     print("\n[3/5] Fetching app details and filtering indie games...")
@@ -498,7 +520,9 @@ def main():
     print(f"\n  Found {len(indie_games)} indie games")
 
     if not indie_games:
-        print("  WARNING: No indie games found! Saving empty dataset.")
+        raise RuntimeError(
+            "No indie games passed the filters; refusing to overwrite existing data."
+        )
 
     # Step 3: AI Analysis
     analyses = {}
