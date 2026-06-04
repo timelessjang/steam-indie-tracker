@@ -488,9 +488,12 @@ def main():
         spy_data = fetch_steamspy_data(appid)
         top_tags = []
         if spy_data and "tags" in spy_data:
-            # Sort tags by vote count
-            sorted_tags = sorted(spy_data["tags"].items(), key=lambda x: x[1], reverse=True)
-            top_tags = [t[0] for t in sorted_tags[:15]]
+            tags_raw = spy_data["tags"]
+            if isinstance(tags_raw, dict):
+                sorted_tags = sorted(tags_raw.items(), key=lambda x: x[1], reverse=True)
+                top_tags = [t[0] for t in sorted_tags[:15]]
+            elif isinstance(tags_raw, list):
+                top_tags = tags_raw[:15]
 
         # Extract useful fields
         genres = [g["description"] for g in details.get("genres", [])]
