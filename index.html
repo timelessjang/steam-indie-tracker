@@ -15,10 +15,10 @@
     <header>
       <div class="eyebrow">Steam Indie Tracker</div>
       <h1>本周热门独立游戏玩法趋势</h1>
-      <p class="lead">自动扫描 Steam 本周热榜与热门新品，只保留独立团队作品，过滤 3A 与大厂发行游戏，并拆解玩法标签、核心 Hook、玩法公式和趋势分类。</p>
+      <p class="lead">自动扫描 Steam 本周热榜与热门新品，只保留最近 7 天上架的独立团队作品，过滤 3A 与大厂发行游戏，并拆解玩法标签、核心 Hook、玩法公式和趋势分类。</p>
       <div class="toolbar">
         <span class="pill">数据源：Steam + SteamSpy</span>
-        <span class="pill">范围：本周火爆独立游戏</span>
+        <span class="pill" id="windowPill">范围：最近 7 天新上架</span>
         <span class="pill">排除：3A / 大厂发行</span>
         <select id="weekSelect" aria-label="选择周报"></select>
       </div>
@@ -40,7 +40,7 @@
     async function init(){try{const index=await loadJson("data/archive_index.json");await Promise.all((index.weeks||[]).map(async week=>{try{state.archives[week]=await loadJson(`data/archive_${week}.json`)}catch{}}))}catch{}try{const weekly=await loadJson("data/weekly.json");state.archives[weekly.week_of]=weekly}catch{}state.weeks=Object.keys(state.archives).sort().reverse();if(!state.weeks.length){$("games").innerHTML='<div class="empty">还没有数据。请先运行 GitHub Actions 或 python scripts/fetch.py。</div>';return}buildWeekSelect();showWeek(state.weeks[0])}
     function buildWeekSelect(){const select=$("weekSelect");select.innerHTML=state.weeks.map((week,index)=>`<option value="${week}">${week}${index===0?" 最新":""}</option>`).join("");select.onchange=()=>showWeek(select.value)}
     function showWeek(week){state.data=state.archives[week];state.filter="all";render()}
-    function render(){const data=state.data;const games=data.games||[];const trends={};for(const game of games){const trend=game.analysis?.trend_category||"未分类";trends[trend]=(trends[trend]||0)+1}const ranked=Object.entries(trends).sort((a,b)=>b[1]-a[1]);$("count").textContent=data.total_indie??games.length;$("checked").textContent=data.total_checked??"-";$("topTrend").textContent=ranked[0]?.[0]||"-";$("date").textContent=data.week_of||"-";renderInsight(ranked,games);renderFilters(ranked);renderGames()}
+    function render(){const data=state.data;const games=data.games||[];const trends={};for(const game of games){const trend=game.analysis?.trend_category||"未分类";trends[trend]=(trends[trend]||0)+1}const ranked=Object.entries(trends).sort((a,b)=>b[1]-a[1]);$("count").textContent=data.total_indie??games.length;$("checked").textContent=data.total_checked??"-";$("topTrend").textContent=ranked[0]?.[0]||"-";$("date").textContent=data.week_of||"-";if(data.release_window_start&&data.release_window_end){$("windowPill").textContent=`范围：${data.release_window_start} 至 ${data.release_window_end}`}renderInsight(ranked,games);renderFilters(ranked);renderGames()}
     function renderInsight(ranked,games){if(!ranked.length){$("insight").hidden=true;return}const[trend,count]=ranked[0];const examples=games.filter(g=>g.analysis?.trend_category===trend).slice(0,3).map(g=>g.name).join("、");$("insight").hidden=false;$("insightText").textContent=`本周最明显的方向是「${trend}」，共有 ${count} 款入选，代表作品包括 ${examples}。这些作品共同说明：小团队仍在用清晰的机制组合和强 Hook 对抗大制作的内容规模。`}
     function renderFilters(ranked){const filters=$("filters");filters.innerHTML=`<button class="${state.filter==="all"?"active":""}" data-filter="all">全部</button>`+ranked.map(([trend,count])=>`<button class="${state.filter===trend?"active":""}" data-filter="${escapeHtml(trend)}">${escapeHtml(trend)} (${count})</button>`).join("");filters.querySelectorAll("button").forEach(button=>{button.onclick=()=>{state.filter=button.dataset.filter;renderFilters(ranked);renderGames()}})}
     function renderGames(){let games=state.data.games||[];if(state.filter!=="all")games=games.filter(game=>game.analysis?.trend_category===state.filter);$("games").innerHTML=games.map(renderCard).join("")||'<div class="empty">这个分类下暂无游戏。</div>'}

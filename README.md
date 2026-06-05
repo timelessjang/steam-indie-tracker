@@ -1,6 +1,6 @@
 # Steam Indie Tracker
 
-每周自动追踪 Steam 本周火爆独立游戏，过滤 3A 和大厂发行作品，并分析玩法标签、核心 Hook、玩法公式和趋势分类。
+每周自动追踪 Steam 最近 7 天上架且本周火爆的独立游戏，过滤 3A 和大厂发行作品，并分析玩法标签、核心 Hook、玩法公式和趋势分类。
 
 网站是纯静态 GitHub Pages，数据由 GitHub Actions 自动生成到 `data/weekly.json` 和历史归档。
 
@@ -15,6 +15,7 @@
 ```bash
 python -m unittest discover -s tests -v
 python scripts/fetch.py --no-ai
+python scripts/fetch.py --no-ai --run-date 2026-06-04
 ```
 
 ## 过滤逻辑
@@ -22,6 +23,7 @@ python scripts/fetch.py --no-ai
 脚本从 Steam 周榜、热门新品、热销榜和趋势榜抓取候选，然后：
 
 1. 读取 Steam AppDetails 和 SteamSpy 标签。
-2. 排除 Valve、EA、Ubisoft、Sony、Microsoft、Tencent、NetEase、Square Enix 等 3A 或大厂发行/开发作品。
-3. 保留 Steam 明确标记为 Indie，或无大厂背景且价格/标签符合小团队特征的作品。
-4. 如果没有任何合格结果，自动任务失败并保留上一期数据，避免网站被覆盖为空。
+2. 只保留运行当天往前 7 天内发售的游戏。例如 2026-06-04 运行时，窗口是 2026-05-28 到 2026-06-04。
+3. 排除 Valve、EA、Ubisoft、Sony、Microsoft、Tencent、NetEase、Square Enix 等 3A 或大厂发行/开发作品。
+4. 保留 Steam 明确标记为 Indie，或无大厂背景且价格/标签符合小团队特征的作品。
+5. 如果没有任何合格结果，自动任务失败并保留上一期数据，避免网站被覆盖为空。

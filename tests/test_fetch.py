@@ -2,6 +2,7 @@ import importlib.util
 import json
 import sys
 import unittest
+from datetime import date
 from pathlib import Path
 
 
@@ -47,6 +48,28 @@ class SteamParsingTests(unittest.TestCase):
 
         self.assertEqual(set(analysis), {"gameplay_tags", "hook", "formula", "trend_category"})
         self.assertIn("Roguelike", analysis["formula"])
+
+    def test_release_window_includes_last_seven_days(self):
+        self.assertEqual(
+            fetch.release_window(date(2026, 6, 4)),
+            (date(2026, 5, 28), date(2026, 6, 4)),
+        )
+
+    def test_old_release_is_rejected(self):
+        ok, reason = fetch.is_recent_release({
+            "release_date": {"date": "Oct 18, 2022", "coming_soon": False}
+        }, date(2026, 6, 4))
+
+        self.assertFalse(ok)
+        self.assertIn("outside", reason)
+
+    def test_current_week_release_is_accepted(self):
+        ok, reason = fetch.is_recent_release({
+            "release_date": {"date": "May 30, 2026", "coming_soon": False}
+        }, date(2026, 6, 4))
+
+        self.assertTrue(ok)
+        self.assertIn("within", reason)
 
 
 if __name__ == "__main__":

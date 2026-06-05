@@ -15,7 +15,7 @@ import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 
@@ -23,6 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data"
 MAX_CANDIDATES = 90
 TARGET_GAMES = 15
+RELEASE_WINDOW_DAYS = 7
 
 AAA_PUBLISHER_KEYWORDS = {
     "activision", "amazon games", "bandai namco", "behaviour interactive",
@@ -210,6 +211,46 @@ def has_big_publisher(publishers: list[str]) -> str | None:
             if keyword in publisher:
                 return publisher
     return None
+
+
+def parse_steam_release_date(value: str, fallback_year: int) -> date | None:
+    value = (value or "").strip()
+    if not value:
+        return None
+    if re.fullmatch(r"\d{4}", value):
+        return date(int(value), 1, 1)
+    formats = ("%b %d, %Y", "%B %d, %Y", "%d %b, %Y", "%d %B, %Y")
+    for fmt in formats:
+        try:
+            return datetime.strptime(value, fmt).date()
+        except ValueError:
+            pass
+    formats_without_year = ("%b %d", "%B %d", "%d %b", "%d %B")
+    for fmt in formats_without_year:
+        try:
+            parsed = datetime.strptime(value, fmt)
+            return date(fallback_year, parsed.month, parsed.day)
+        except ValueError:
+            pass
+    return None
+
+
+def release_window(run_date: date, days: int = RELEASE_WINDOW_DAYS) -> tuple[date, date]:
+    return run_date - timedelta(days=days), run_date
+
+
+def is_recent_release(details: dict, run_date: date, days: int = RELEASE_WINDOW_DAYS) -> tuple[bool, str]:
+    release = details.get("release_date", {})
+    if release.get("coming_soon", False):
+        return False, "coming soon"
+    raw_date = release.get("date", "")
+    parsed = parse_steam_release_date(raw_date, run_date.year)
+    if not parsed:
+        return False, f"unparseable release date: {raw_date or 'missing'}"
+    start, end = release_window(run_date, days)
+    if start <= parsed <= end:
+        return True, f"released {parsed.isoformat()} within {start.isoformat()}..{end.isoformat()}"
+    return False, f"released {parsed.isoformat()} outside {start.isoformat()}..{end.isoformat()}"
 
 
 def is_indie_game(details: dict, tags: list[str]) -> tuple[bool, str, str]:
@@ -421,11 +462,19 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--no-ai", action="store_true", help="Skip Claude analysis")
     parser.add_argument("--anthropic-key", default=os.environ.get("ANTHROPIC_API_KEY", ""))
+    parser.add_argument("--run-date", help="Override run date in YYYY-MM-DD format for testing")
     args = parser.parse_args()
+    run_date = (
+        datetime.strptime(args.run_date, "%Y-%m-%d").date()
+        if args.run_date
+        else datetime.now(timezone.utc).date()
+    )
+    window_start, window_end = release_window(run_date)
 
     print("=" * 70)
     print("Steam Indie Tracker - weekly independent game scan")
     print(datetime.now(timezone.utc).strftime("Run time: %Y-%m-%d %H:%M UTC"))
+    print(f"Release window: {window_start.isoformat()} to {window_end.isoformat()}")
     print("=" * 70)
 
     candidates = fetch_hot_candidates()
@@ -444,6 +493,10 @@ def main() -> None:
         details = fetch_app_details(candidate.appid)
         if not details:
             print("    skip: no app details")
+            continue
+        recent, release_reason = is_recent_release(details, run_date)
+        if not recent:
+            print(f"    skip: {release_reason}")
             continue
         tags = fetch_steamspy_tags(candidate.appid)
         ok, confidence, reason = is_indie_game(details, tags)
@@ -472,7 +525,9 @@ def main() -> None:
 
     output = {
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "week_of": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+        "week_of": run_date.isoformat(),
+        "release_window_start": window_start.isoformat(),
+        "release_window_end": window_end.isoformat(),
         "total_checked": checked,
         "total_indie": len(games),
         "used_ai": not args.no_ai and bool(analyses),
