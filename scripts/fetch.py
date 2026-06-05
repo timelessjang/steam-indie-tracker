@@ -1,581 +1,488 @@
 #!/usr/bin/env python3
-"""
-Steam Indie Tracker - Weekly Fetch Script
-Fetches trending indie games from Steam, analyzes gameplay mechanics via Claude API,
-and outputs a JSON data file for the static website.
+"""Fetch this week's hot independent games from Steam and publish site data."""
 
-Usage:
-    python fetch.py                    # Run with Claude API analysis
-    python fetch.py --no-ai            # Run without AI (tags only, no Claude API needed)
-    python fetch.py --anthropic-key KEY # Pass API key directly
+from __future__ import annotations
 
-Environment variables:
-    ANTHROPIC_API_KEY - Your Anthropic API key (for gameplay analysis)
-"""
-
+import argparse
+import html
 import json
 import os
 import re
 import sys
 import time
-import argparse
-import urllib.request
 import urllib.error
+import urllib.parse
+import urllib.request
 import xml.etree.ElementTree as ET
+from dataclasses import dataclass
 from datetime import datetime, timezone
+from pathlib import Path
 
-# --- Config ---
-KNOWN_AAA_PUBLISHERS = {
-    "electronic arts", "ea", "ubisoft", "activision", "blizzard",
-    "blizzard entertainment", "bethesda softworks", "rockstar games",
-    "take-two interactive", "2k", "square enix", "capcom", "bandai namco",
-    "sega", "konami", "warner bros", "sony", "playstation", "microsoft",
-    "xbox game studios", "nintendo", "epic games", "valve", "riot games",
-    "mihoyo", "hoyoverse", "cognosphere", "netease", "tencent",
-    "deep silver", "thq nordic", "focus entertainment", "505 games",
-    "paradox interactive", "nacon", "team17", "devolver digital",
-    "annapurna interactive",
+
+ROOT = Path(__file__).resolve().parents[1]
+DATA_DIR = ROOT / "data"
+MAX_CANDIDATES = 90
+TARGET_GAMES = 15
+
+AAA_PUBLISHER_KEYWORDS = {
+    "activision", "amazon games", "bandai namco", "behaviour interactive",
+    "bethesda", "blizzard", "capcom", "cd projekt", "cognosphere",
+    "bungie", "deep silver", "electronic arts", "embark", "epic games", "fatshark",
+    "focus entertainment", "gameloft", "gearbox", "hoyoverse", "konami",
+    "krafton", "microsoft", "mihoyo", "nacon", "netease", "nexon", "nintendo", "paradox",
+    "pearl abyss", "playstation", "riot games", "rockstar", "secret mode",
+    "sega", "sony", "square enix", "sumo group", "take-two", "tencent",
+    "thq nordic", "ubisoft", "unknown worlds", "valve", "warner bros",
+    "xbox game studios", "2k",
 }
 
-INDIE_FRIENDLY_PUBLISHERS = {
-    "devolver digital", "annapurna interactive", "team17", "raw fury",
-    "humble games", "tinybuild", "daedalic entertainment",
-}
-
-OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
+NON_GAME_KEYWORDS = {"software", "video production", "utilities", "animation & modeling"}
+LARGE_SERVICE_TAGS = {"mmorpg", "massively multiplayer"}
 
 
-def configure_console():
-    """Keep game titles and analysis text printable on all runners."""
+@dataclass
+class Candidate:
+    appid: int
+    name: str
+    source: str
+    rank: int | None = None
+    heat_score: int = 0
+
+
+def configure_console() -> None:
     for stream in (sys.stdout, sys.stderr):
         if hasattr(stream, "reconfigure"):
             stream.reconfigure(encoding="utf-8", errors="replace")
 
 
-def fetch_url(url, retries=3, delay=1.5):
-    """Fetch URL with retries and rate limiting."""
-    for attempt in range(retries):
+def fetch_url(url: str, retries: int = 3, delay: float = 1.2) -> str | None:
+    headers = {
+        "User-Agent": "Mozilla/5.0 SteamIndieTracker/2.0",
+        "Accept": "application/json,text/xml,text/html,*/*",
+        "Accept-Language": "en-US,en;q=0.9",
+    }
+    for attempt in range(1, retries + 1):
         try:
-            req = urllib.request.Request(url, headers={
-                "User-Agent": "SteamIndieTracker/1.0",
-                "Accept": "application/json,text/xml,*/*",
-            })
-            with urllib.request.urlopen(req, timeout=15) as resp:
-                return resp.read().decode("utf-8")
-        except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError) as e:
-            print(f"  Attempt {attempt+1}/{retries} failed for {url}: {e}")
-            if attempt < retries - 1:
-                time.sleep(delay * (attempt + 1))
+            req = urllib.request.Request(url, headers=headers)
+            with urllib.request.urlopen(req, timeout=20) as resp:
+                charset = resp.headers.get_content_charset() or "utf-8"
+                return resp.read().decode(charset, errors="replace")
+        except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError) as exc:
+            print(f"  Attempt {attempt}/{retries} failed: {url} -> {exc}")
+            if attempt < retries:
+                time.sleep(delay * attempt)
     return None
 
 
-def fetch_weekly_top_sellers():
-    """Fetch the Steam weekly top sellers RSS feed."""
-    print("[1/5] Fetching Steam weekly top sellers RSS...")
-    xml_text = fetch_url("https://store.steampowered.com/feeds/weeklytopsellers.xml")
-    if not xml_text:
-        print("  ERROR: Could not fetch RSS feed")
+def parse_appids_from_text(text: str) -> list[int]:
+    patterns = [
+        re.compile(r"/app/(\d+)(?:/|$)"),
+        re.compile(r"/apps/(\d+)(?:/|$)"),
+        re.compile(r"steam/apps/(\d+)(?:/|$)"),
+        re.compile(r'"appid"\s*:\s*(\d+)'),
+    ]
+    appids: list[int] = []
+    for pattern in patterns:
+        for match in pattern.finditer(text):
+            appid = int(match.group(1))
+            if appid not in appids:
+                appids.append(appid)
+    return appids
+
+
+def parse_search_results(text: str, source: str, base_score: int) -> list[Candidate]:
+    candidates: list[Candidate] = []
+    try:
+        data = json.loads(text)
+        items = data.get("items", [])
+        for index, item in enumerate(items, start=1):
+            haystack = json.dumps(item, ensure_ascii=False)
+            appids = parse_appids_from_text(haystack)
+            if not appids:
+                continue
+            name = html.unescape(re.sub(r"<[^>]+>", "", item.get("name", ""))).strip()
+            candidates.append(Candidate(appids[0], name, source, heat_score=base_score - index))
+    except json.JSONDecodeError:
+        for index, appid in enumerate(parse_appids_from_text(text), start=1):
+            candidates.append(Candidate(appid, "", source, heat_score=base_score - index))
+    return candidates
+
+
+def fetch_weekly_top_sellers() -> list[Candidate]:
+    print("[1/5] Fetching Steam weekly top sellers...")
+    text = fetch_url("https://store.steampowered.com/feeds/weeklytopsellers.xml")
+    if not text:
+        print("  Source unavailable")
         return []
-
-    games = []
-    root = ET.fromstring(xml_text)
-
+    root = ET.fromstring(text)
+    out: list[Candidate] = []
     for item in root.findall("{http://purl.org/rss/1.0/}item"):
-        title_el = item.find("{http://purl.org/rss/1.0/}title")
-        link_el = item.find("{http://purl.org/rss/1.0/}link")
-        if title_el is None or link_el is None:
+        title = (item.findtext("{http://purl.org/rss/1.0/}title") or "").strip()
+        link = (item.findtext("{http://purl.org/rss/1.0/}link") or "").strip()
+        appids = parse_appids_from_text(link)
+        if not appids:
             continue
-
-        title = title_el.text or ""
-        link = link_el.text or ""
         rank_match = re.match(r"#(\d+)\s*-\s*(.+)", title)
-        rank = int(rank_match.group(1)) if rank_match else 0
-        clean_title = rank_match.group(2).strip() if rank_match else title.strip()
-
-        appid_match = re.search(r"/app/(\d+)/", link)
-        appid = int(appid_match.group(1)) if appid_match else None
-
-        if appid:
-            games.append({
-                "appid": appid,
-                "name": clean_title,
-                "rank": rank,
-                "url": link.split("?")[0],
-                "source": "weekly_top_sellers",
-            })
-
-    print(f"  Found {len(games)} games in weekly top sellers")
-    return games
+        rank = int(rank_match.group(1)) if rank_match else None
+        name = rank_match.group(2).strip() if rank_match else title
+        out.append(Candidate(appids[0], html.unescape(name), "weekly_top_sellers", rank, 220 - (rank or 99)))
+    print(f"  Found {len(out)} candidates")
+    return out
 
 
-def fetch_popular_new_releases():
-    """Fetch popular new releases from Steam search API."""
-    print("[2/5] Fetching popular new releases...")
-    url = (
-        "https://store.steampowered.com/search/results/"
-        "?filter=popularnew&category1=998&json=1&count=50&start=0"
-    )
-    text = fetch_url(url)
+def fetch_search_candidates(filter_name: str, source: str, base_score: int, count: int = 100) -> list[Candidate]:
+    params = urllib.parse.urlencode({
+        "filter": filter_name,
+        "category1": "998",
+        "json": "1",
+        "count": str(count),
+        "start": "0",
+        "l": "english",
+    })
+    text = fetch_url(f"https://store.steampowered.com/search/results/?{params}")
     if not text:
-        print("  ERROR: Could not fetch popular new releases")
         return []
-
-    games = parse_popular_new_releases(text)
-    print(f"  Found {len(games)} games in popular new releases")
-    return games
+    return parse_search_results(text, source, base_score)
 
 
-def parse_popular_new_releases(text):
-    """Parse Steam search JSON/HTML into a deduplicated app list."""
-    games = []
-    # Search results currently use image URLs like /steam/apps/730/..., while
-    # older responses and HTML links use /app/730/.
-    appid_pattern = re.compile(r"/apps?/(\d+)(?:/|$)")
-    name_pattern = re.compile(r'class="title">([^<]+)<')
-
-    try:
-        data = json.loads(text)
-        if "items" in data:
-            for item in data["items"]:
-                appid_match = appid_pattern.search(item.get("logo", "") + item.get("name", ""))
-                if not appid_match:
-                    appid_match = appid_pattern.search(str(item))
-                if appid_match:
-                    appid = int(appid_match.group(1))
-                    name = item.get("name", "")
-                    if "<" in name:
-                        name_match = name_pattern.search(name)
-                        name = name_match.group(1) if name_match else ""
-                    if not any(g["appid"] == appid for g in games):
-                        games.append({
-                            "appid": appid,
-                            "name": name,
-                            "source": "popular_new",
-                        })
-    except json.JSONDecodeError:
-        for m in appid_pattern.finditer(text):
-            appid = int(m.group(1))
-            if not any(g["appid"] == appid for g in games):
-                games.append({
-                    "appid": appid,
-                    "name": "",
-                    "source": "popular_new",
-                })
-
-    return games
+def fetch_hot_candidates() -> list[Candidate]:
+    print("[2/5] Fetching Steam hot lists...")
+    lists = [
+        fetch_weekly_top_sellers(),
+        fetch_search_candidates("popularnew", "popular_new", 180),
+        fetch_search_candidates("topsellers", "top_sellers", 160),
+        fetch_search_candidates("trending", "trending", 140),
+    ]
+    merged: dict[int, Candidate] = {}
+    for source_list in lists:
+        for candidate in source_list:
+            existing = merged.get(candidate.appid)
+            if existing:
+                existing.heat_score += candidate.heat_score
+                if not existing.rank:
+                    existing.rank = candidate.rank
+                if existing.source != candidate.source:
+                    existing.source = f"{existing.source},{candidate.source}"
+            else:
+                merged[candidate.appid] = candidate
+    candidates = sorted(merged.values(), key=lambda c: c.heat_score, reverse=True)
+    print(f"  Total unique candidates: {len(candidates)}")
+    return candidates[:MAX_CANDIDATES]
 
 
-def fetch_app_details(appid):
-    """Fetch detailed info for a single app from Steam API."""
+def fetch_app_details(appid: int) -> dict | None:
     url = f"https://store.steampowered.com/api/appdetails?appids={appid}&l=english"
-    text = fetch_url(url)
+    text = fetch_url(url, retries=2)
     if not text:
         return None
-
     try:
-        data = json.loads(text)
-        app_data = data.get(str(appid), {})
-        if app_data.get("success") and "data" in app_data:
-            return app_data["data"]
-    except (json.JSONDecodeError, KeyError):
-        pass
-    return None
-
-
-def fetch_steamspy_data(appid):
-    """Fetch tag data from SteamSpy API."""
-    url = f"https://steamspy.com/api.php?request=appdetails&appid={appid}"
-    text = fetch_url(url, retries=2, delay=2)
-    if not text:
-        return None
-
-    try:
-        data = json.loads(text)
-        if data.get("appid") == appid:
-            return data
+        data = json.loads(text).get(str(appid), {})
+        if data.get("success"):
+            return data.get("data")
     except json.JSONDecodeError:
-        pass
+        return None
     return None
 
 
-def is_indie_game(details, steamspy_data=None):
-    """
-    Determine if a game is likely indie based on available data.
-    Returns (is_indie: bool, confidence: str, reason: str)
-    """
-    if not details:
-        return False, "low", "no data"
+def fetch_steamspy_tags(appid: int) -> list[str]:
+    text = fetch_url(f"https://steamspy.com/api.php?request=appdetails&appid={appid}", retries=2, delay=2)
+    if not text:
+        return []
+    try:
+        tags = json.loads(text).get("tags", {})
+    except json.JSONDecodeError:
+        return []
+    if isinstance(tags, dict):
+        return [name for name, _ in sorted(tags.items(), key=lambda item: item[1], reverse=True)[:15]]
+    if isinstance(tags, list):
+        return tags[:15]
+    return []
 
-    genres = [g["description"].lower() for g in details.get("genres", [])]
-    developers = [d.lower() for d in details.get("developers", [])]
-    publishers = [p.lower() for p in details.get("publishers", [])]
 
-    has_indie_genre = "indie" in genres
+def normalize_names(values: list[str]) -> list[str]:
+    return [value.strip().lower() for value in values if value and value.strip()]
 
-    is_aaa_publisher = any(
-        pub in KNOWN_AAA_PUBLISHERS
-        for pub in publishers
-    )
+
+def has_big_publisher(publishers: list[str]) -> str | None:
+    normalized = normalize_names(publishers)
+    for publisher in normalized:
+        for keyword in AAA_PUBLISHER_KEYWORDS:
+            if keyword in publisher:
+                return publisher
+    return None
+
+
+def is_indie_game(details: dict, tags: list[str]) -> tuple[bool, str, str]:
+    genres = [g.get("description", "") for g in details.get("genres", [])]
+    genre_lowers = normalize_names(genres)
+    categories = normalize_names([c.get("description", "") for c in details.get("categories", [])])
+    publishers = details.get("publishers", [])
+    developers = details.get("developers", [])
+
+    if any(keyword in g for g in genre_lowers for keyword in NON_GAME_KEYWORDS):
+        return False, "high", "non-game software category"
+
+    big_publisher = has_big_publisher(publishers)
+    if big_publisher:
+        return False, "high", f"large publisher: {big_publisher}"
+
+    if has_big_publisher(developers):
+        return False, "high", "large-studio developer"
+
+    has_indie = "indie" in genre_lowers or any(tag.lower() == "indie" for tag in tags)
+    tag_lowers = normalize_names(tags)
+    if not has_indie and any(tag in tag_lowers for tag in LARGE_SERVICE_TAGS):
+        return False, "high", "large-scale online service tags without Indie marker"
 
     is_free = details.get("is_free", False)
+    price = details.get("price_overview", {}).get("initial", 0)
+    release = details.get("release_date", {})
+    coming_soon = release.get("coming_soon", False)
 
-    price_cents = 0
-    if "price_overview" in details:
-        price_cents = details["price_overview"].get("initial", 0)
-
-    release_info = details.get("release_date", {})
-    is_coming_soon = release_info.get("coming_soon", False)
-
-    if is_aaa_publisher and not has_indie_genre:
-        return False, "high", f"AAA publisher: {', '.join(publishers)}"
-
-    if has_indie_genre and not is_aaa_publisher:
-        return True, "high", "tagged indie + non-AAA publisher"
-
-    if has_indie_genre and is_aaa_publisher:
-        if any(pub in INDIE_FRIENDLY_PUBLISHERS for pub in publishers):
-            return True, "medium", f"indie tag + indie-friendly publisher"
-        return False, "medium", f"indie tag but AAA publisher: {', '.join(publishers)}"
-
-    if not is_aaa_publisher and price_cents > 0 and price_cents <= 3999:
-        return True, "low", "non-AAA, reasonable price, but no indie tag"
-
-    return False, "low", "does not match indie criteria"
+    if has_indie:
+        return True, "high", "Steam marks it as Indie and no large publisher matched"
+    if not is_free and 0 < price <= 3999 and not coming_soon:
+        return True, "medium", "small publisher with indie-range price"
+    if tags and not publishers:
+        return True, "low", "tag-rich small game with no large publisher"
+    return False, "low", "not clearly independent"
 
 
-def analyze_with_claude(games_data, api_key):
-    """Use Claude API to analyze gameplay mechanics for a batch of games."""
-    print("[4/5] Analyzing gameplay mechanics with Claude...")
+TAG_LABELS = [
+    ("roguelike", "Roguelike"),
+    ("roguelite", "Roguelite"),
+    ("deckbuilder", "卡牌构筑"),
+    ("deck builder", "卡牌构筑"),
+    ("card", "卡牌"),
+    ("survival", "生存"),
+    ("crafting", "制作建造"),
+    ("base building", "基地建设"),
+    ("automation", "自动化"),
+    ("factory", "工厂自动化"),
+    ("farming", "农场经营"),
+    ("life sim", "生活模拟"),
+    ("cozy", "舒适治愈"),
+    ("management", "经营管理"),
+    ("simulation", "模拟"),
+    ("city builder", "城市建造"),
+    ("strategy", "策略"),
+    ("turn-based", "回合制"),
+    ("tower defense", "塔防"),
+    ("puzzle", "解谜"),
+    ("metroidvania", "银河恶魔城"),
+    ("souls", "类魂"),
+    ("bullet hell", "弹幕"),
+    ("shooter", "射击"),
+    ("fps", "第一人称射击"),
+    ("rhythm", "节奏"),
+    ("horror", "恐怖"),
+    ("open world", "开放世界"),
+    ("sandbox", "沙盒"),
+    ("platformer", "平台跳跃"),
+    ("co-op", "合作"),
+    ("multiplayer", "多人联机"),
+    ("party", "派对游戏"),
+    ("idle", "放置"),
+]
 
-    if not api_key:
-        print("  No API key provided, skipping AI analysis")
-        return {}
-
-    games_prompt = ""
-    for g in games_data:
-        tags_str = ", ".join(g.get("top_tags", []))
-        genres_str = ", ".join(g.get("genres", []))
-        games_prompt += f"""
-Game: {g['name']}
-AppID: {g['appid']}
-Genres: {genres_str}
-Steam Tags: {tags_str}
-Description: {g.get('short_description', 'N/A')}
-Developer: {g.get('developer', 'N/A')}
----
-"""
-
-    prompt = f"""你是一个游戏设计分析师。请分析以下每款独立游戏的核心玩法组合，用中文回答。
-
-对每款游戏，请提供：
-1. gameplay_tags: 3-5个玩法机制标签（用简短中文词，如"Roguelike", "卡牌构筑", "节奏动作", "开放世界", "塔防", "弹幕射击", "模拟经营"等）
-2. hook: 一句话描述这个游戏的核心创意hook是什么（什么让它与众不同）
-3. formula: 玩法公式，格式如 "A + B + C"（如 "节奏战斗 + Roguelike + 格斗"）
-4. trend_category: 这个游戏属于哪个趋势类别（如"概率/赌博机制热", "类魂动作热", "舒适模拟热", "Roguelike变体热"等）
-
-请以JSON格式返回，key为appid（字符串）：
-{{
-  "12345": {{
-    "gameplay_tags": ["标签1", "标签2", "标签3"],
-    "hook": "一句话描述",
-    "formula": "A + B + C",
-    "trend_category": "趋势类别"
-  }}
-}}
-
-仅返回JSON，不要其他文字。
-
-以下是游戏列表：
-{games_prompt}"""
-
-    try:
-        request_body = json.dumps({
-            "model": "claude-sonnet-4-20250514",
-            "max_tokens": 4000,
-            "messages": [{"role": "user", "content": prompt}],
-        }).encode("utf-8")
-
-        req = urllib.request.Request(
-            "https://api.anthropic.com/v1/messages",
-            data=request_body,
-            headers={
-                "Content-Type": "application/json",
-                "x-api-key": api_key,
-                "anthropic-version": "2023-06-01",
-            },
-            method="POST",
-        )
-
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            result = json.loads(resp.read().decode("utf-8"))
-
-        text = ""
-        for block in result.get("content", []):
-            if block.get("type") == "text":
-                text += block["text"]
-
-        text = text.strip()
-        if text.startswith("```"):
-            text = re.sub(r"^```\w*\n?", "", text)
-            text = re.sub(r"\n?```$", "", text)
-
-        analyses = json.loads(text)
-        print(f"  Successfully analyzed {len(analyses)} games")
-        return analyses
-
-    except Exception as e:
-        print(f"  ERROR in Claude API call: {e}")
-        return {}
+TREND_RULES = [
+    (("roguelike", "roguelite", "deckbuilder", "card"), "Roguelike 与卡牌变体"),
+    (("survival", "crafting", "base building", "open world"), "生存建造热"),
+    (("cozy", "farming", "life sim", "relaxing"), "舒适生活模拟"),
+    (("automation", "factory", "management", "simulation"), "自动化与经营模拟"),
+    (("horror", "psychological"), "小体量恐怖叙事"),
+    (("souls", "metroidvania", "bullet hell", "action"), "高强度动作变体"),
+    (("party", "co-op", "multiplayer"), "多人社交玩法"),
+    (("puzzle", "strategy", "turn-based", "tower defense"), "策略解谜混合"),
+]
 
 
-def generate_fallback_analysis(game):
-    """Generate basic analysis from Steam tags when Claude API is not available."""
-    tags = game.get("top_tags", [])
-    genres = game.get("genres", [])
+def analyze_game(game: dict) -> dict:
+    haystack = " ".join(game.get("top_tags", []) + game.get("genres", [])).lower()
+    labels: list[str] = []
+    for needle, label in TAG_LABELS:
+        if needle in haystack and label not in labels:
+            labels.append(label)
+    if not labels:
+        labels = game.get("top_tags", [])[:4] or game.get("genres", [])[:4] or ["独立游戏"]
+    labels = labels[:5]
 
-    tag_map = {
-        "roguelike": "Roguelike",
-        "roguelite": "Roguelite",
-        "deckbuilder": "卡牌构筑",
-        "deck builder": "卡牌构筑",
-        "card game": "卡牌游戏",
-        "fps": "第一人称射击",
-        "shooter": "射击",
-        "survival": "生存",
-        "crafting": "制作合成",
-        "base building": "基地建设",
-        "open world": "开放世界",
-        "sandbox": "沙盒",
-        "platformer": "平台跳跃",
-        "metroidvania": "银河恶魔城",
-        "puzzle": "解谜",
-        "rhythm": "节奏",
-        "tower defense": "塔防",
-        "city builder": "城市建造",
-        "management": "经营管理",
-        "simulation": "模拟",
-        "farming sim": "农场模拟",
-        "fishing": "钓鱼",
-        "cooking": "烹饪",
-        "horror": "恐怖",
-        "psychological horror": "心理恐怖",
-        "soulslike": "类魂",
-        "souls-like": "类魂",
-        "turn-based": "回合制",
-        "strategy": "策略",
-        "rpg": "RPG",
-        "action rpg": "动作RPG",
-        "narrative": "叙事",
-        "visual novel": "视觉小说",
-        "co-op": "合作",
-        "multiplayer": "多人",
-        "pvp": "PvP",
-        "party game": "派对游戏",
-        "racing": "竞速",
-        "fighting": "格斗",
-        "beat 'em up": "清版动作",
-        "hack and slash": "砍杀",
-        "stealth": "潜行",
-        "exploration": "探索",
-        "cozy": "舒适",
-        "relaxing": "休闲",
-        "pixel graphics": "像素风",
-        "retro": "复古",
-        "2d": "2D",
-        "3d": "3D",
-        "top-down": "俯视角",
-        "side scroller": "横版",
-        "bullet hell": "弹幕",
-        "idle": "放置",
-        "clicker": "点击",
-        "automation": "自动化",
-        "dating sim": "恋爱模拟",
-        "life sim": "生活模拟",
-        "dungeon crawler": "地牢探索",
-        "action": "动作",
-        "adventure": "冒险",
-        "indie": "独立游戏",
-    }
-
-    gameplay_tags = []
-    for tag in tags[:8]:
-        tag_lower = tag.lower()
-        for en, cn in tag_map.items():
-            if en in tag_lower and cn not in gameplay_tags:
-                gameplay_tags.append(cn)
-                break
-
-    if not gameplay_tags:
-        gameplay_tags = tags[:4]
-
-    gameplay_tags = gameplay_tags[:5]
-
-    return {
-        "gameplay_tags": gameplay_tags,
-        "hook": f"基于Steam标签的初步分类：{', '.join(tags[:5])}",
-        "formula": " + ".join(gameplay_tags[:3]) if len(gameplay_tags) >= 2 else "待分析",
-        "trend_category": "待分析",
-    }
-
-
-def main():
-    configure_console()
-
-    parser = argparse.ArgumentParser(description="Steam Indie Tracker - Fetch & Analyze")
-    parser.add_argument("--no-ai", action="store_true", help="Skip Claude API analysis")
-    parser.add_argument("--anthropic-key", type=str, help="Anthropic API key")
-    args = parser.parse_args()
-
-    api_key = args.anthropic_key or os.environ.get("ANTHROPIC_API_KEY", "")
-
-    print("=" * 60)
-    print("Steam Indie Tracker - Weekly Fetch")
-    print(f"Date: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}")
-    print("=" * 60)
-
-    # Step 1: Fetch game lists
-    top_sellers = fetch_weekly_top_sellers()
-    new_releases = fetch_popular_new_releases()
-
-    # Merge and deduplicate
-    all_appids = {}
-    for g in top_sellers:
-        all_appids[g["appid"]] = g
-    for g in new_releases:
-        if g["appid"] not in all_appids:
-            all_appids[g["appid"]] = g
-
-    print(f"\n  Total unique games to check: {len(all_appids)}")
-    if not all_appids:
-        raise RuntimeError(
-            "No games were returned by Steam sources; refusing to overwrite existing data."
-        )
-
-    # Step 2: Fetch details and filter for indie
-    print("\n[3/5] Fetching app details and filtering indie games...")
-    indie_games = []
-    checked = 0
-
-    for appid, game_info in list(all_appids.items()):
-        checked += 1
-        if checked > 60:
+    trend = "独立新品综合热"
+    for needles, name in TREND_RULES:
+        if any(needle in haystack for needle in needles):
+            trend = name
             break
 
-        print(f"  [{checked}/{min(len(all_appids), 60)}] Checking {game_info.get('name', appid)}...")
-        time.sleep(0.5)
+    formula = " + ".join(labels[:3]) if len(labels) >= 2 else labels[0]
+    desc = game.get("short_description") or ""
+    hook = desc.strip()
+    if len(hook) > 92:
+        hook = hook[:89].rstrip() + "..."
+    if not hook:
+        hook = f"以 {formula} 为核心卖点的本周热门独立游戏。"
 
-        details = fetch_app_details(appid)
+    return {
+        "gameplay_tags": labels,
+        "hook": hook,
+        "formula": formula,
+        "trend_category": trend,
+    }
+
+
+def analyze_with_claude(games: list[dict], api_key: str) -> dict[str, dict]:
+    if not api_key or not games:
+        return {}
+    print("[4/5] Asking Claude for gameplay analysis...")
+    compact = [
+        {
+            "appid": g["appid"],
+            "name": g["name"],
+            "genres": g["genres"],
+            "tags": g["top_tags"][:10],
+            "description": g["short_description"],
+            "developer": g["developer"],
+            "publisher": g["publisher"],
+        }
+        for g in games
+    ]
+    prompt = (
+        "你是独立游戏玩法趋势分析师。请只基于下面这些本周 Steam 热门独立游戏，"
+        "为每个游戏输出玩法标签、核心 hook、玩法公式、趋势分类。"
+        "返回严格 JSON，key 是 appid 字符串，不要 markdown。\n\n"
+        "字段格式：gameplay_tags 为 3-5 个中文短标签；hook 为一句中文洞察；"
+        "formula 格式为 A + B + C；trend_category 为中文趋势名。\n\n"
+        f"{json.dumps(compact, ensure_ascii=False)}"
+    )
+    body = json.dumps({
+        "model": "claude-sonnet-4-20250514",
+        "max_tokens": 5000,
+        "messages": [{"role": "user", "content": prompt}],
+    }).encode("utf-8")
+    req = urllib.request.Request(
+        "https://api.anthropic.com/v1/messages",
+        data=body,
+        headers={
+            "Content-Type": "application/json",
+            "x-api-key": api_key,
+            "anthropic-version": "2023-06-01",
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=90) as resp:
+            result = json.loads(resp.read().decode("utf-8"))
+        text = "".join(block.get("text", "") for block in result.get("content", []) if block.get("type") == "text")
+        text = re.sub(r"^```(?:json)?\s*|\s*```$", "", text.strip())
+        return json.loads(text)
+    except Exception as exc:
+        print(f"  Claude analysis failed, using rules instead: {exc}")
+        return {}
+
+
+def build_game(candidate: Candidate, details: dict, tags: list[str], confidence: str, reason: str) -> dict:
+    developers = details.get("developers", [])
+    publishers = details.get("publishers", [])
+    price_info = details.get("price_overview", {})
+    return {
+        "appid": candidate.appid,
+        "name": details.get("name") or candidate.name or f"App {candidate.appid}",
+        "url": f"https://store.steampowered.com/app/{candidate.appid}/",
+        "header_image": details.get("header_image", ""),
+        "short_description": html.unescape(details.get("short_description", "")),
+        "developer": ", ".join(developers),
+        "publisher": ", ".join(publishers),
+        "genres": [g.get("description", "") for g in details.get("genres", [])],
+        "top_tags": tags,
+        "release_date": details.get("release_date", {}).get("date", ""),
+        "price": "Free" if details.get("is_free") else price_info.get("final_formatted", "N/A"),
+        "rank": candidate.rank,
+        "source": candidate.source,
+        "heat_score": candidate.heat_score,
+        "indie_confidence": confidence,
+        "indie_reason": reason,
+    }
+
+
+def write_outputs(output: dict) -> None:
+    DATA_DIR.mkdir(exist_ok=True)
+    (DATA_DIR / "weekly.json").write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
+    archive_path = DATA_DIR / f"archive_{output['week_of']}.json"
+    archive_path.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
+    weeks = sorted(
+        path.stem.replace("archive_", "")
+        for path in DATA_DIR.glob("archive_*.json")
+        if path.name != "archive_index.json"
+    )
+    (DATA_DIR / "archive_index.json").write_text(json.dumps({"weeks": weeks}, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def main() -> None:
+    configure_console()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--no-ai", action="store_true", help="Skip Claude analysis")
+    parser.add_argument("--anthropic-key", default=os.environ.get("ANTHROPIC_API_KEY", ""))
+    args = parser.parse_args()
+
+    print("=" * 70)
+    print("Steam Indie Tracker - weekly independent game scan")
+    print(datetime.now(timezone.utc).strftime("Run time: %Y-%m-%d %H:%M UTC"))
+    print("=" * 70)
+
+    candidates = fetch_hot_candidates()
+    if not candidates:
+        raise RuntimeError("No Steam candidates found; refusing to overwrite site data.")
+
+    print("[3/5] Filtering for independent games and excluding large publishers...")
+    games: list[dict] = []
+    checked = 0
+    for candidate in candidates:
+        checked += 1
+        if len(games) >= TARGET_GAMES:
+            break
+        print(f"  [{checked}/{len(candidates)}] {candidate.name or candidate.appid}")
+        time.sleep(0.35)
+        details = fetch_app_details(candidate.appid)
         if not details:
-            print(f"    Skipped: could not fetch details")
+            print("    skip: no app details")
             continue
-
-        if not game_info.get("name"):
-            game_info["name"] = details.get("name", f"App {appid}")
-
-        is_indie, confidence, reason = is_indie_game(details)
-        print(f"    Indie: {is_indie} ({confidence}) - {reason}")
-
-        if not is_indie:
+        tags = fetch_steamspy_tags(candidate.appid)
+        ok, confidence, reason = is_indie_game(details, tags)
+        print(f"    indie={ok} ({confidence}) {reason}")
+        if not ok:
             continue
+        games.append(build_game(candidate, details, tags, confidence, reason))
 
-        # Get SteamSpy tags
-        time.sleep(1)
-        spy_data = fetch_steamspy_data(appid)
-        top_tags = []
-        if spy_data and "tags" in spy_data:
-            tags_raw = spy_data["tags"]
-            if isinstance(tags_raw, dict):
-                sorted_tags = sorted(tags_raw.items(), key=lambda x: x[1], reverse=True)
-                top_tags = [t[0] for t in sorted_tags[:15]]
-            elif isinstance(tags_raw, list):
-                top_tags = tags_raw[:15]
-            else:
-                top_tags = []
+    if not games:
+        raise RuntimeError("No independent games passed filters; refusing to overwrite site data.")
 
-        # Extract useful fields
-        genres = [g["description"] for g in details.get("genres", [])]
-        developers = details.get("developers", [])
-        publishers = details.get("publishers", [])
-        release_date = details.get("release_date", {}).get("date", "")
-        price_info = details.get("price_overview", {})
-        price_str = "Free" if details.get("is_free") else price_info.get("final_formatted", "N/A")
-
-        indie_games.append({
-            "appid": appid,
-            "name": details.get("name", game_info.get("name", "")),
-            "url": f"https://store.steampowered.com/app/{appid}/",
-            "header_image": details.get("header_image", ""),
-            "short_description": details.get("short_description", ""),
-            "developer": ", ".join(developers),
-            "publisher": ", ".join(publishers),
-            "genres": genres,
-            "top_tags": top_tags,
-            "release_date": release_date,
-            "price": price_str,
-            "rank": game_info.get("rank"),
-            "source": game_info.get("source", ""),
-            "indie_confidence": confidence,
-        })
-
-    print(f"\n  Found {len(indie_games)} indie games")
-
-    if not indie_games:
-        raise RuntimeError(
-            "No indie games passed the filters; refusing to overwrite existing data."
-        )
-
-    # Step 3: AI Analysis
     analyses = {}
-    if not args.no_ai and api_key and indie_games:
-        analyses = analyze_with_claude(indie_games, api_key)
-    elif indie_games:
-        print("[4/5] Generating fallback analysis from tags...")
-        for g in indie_games:
-            analyses[str(g["appid"])] = generate_fallback_analysis(g)
+    if not args.no_ai:
+        analyses = analyze_with_claude(games, args.anthropic_key)
+    else:
+        print("[4/5] Generating rule-based gameplay analysis...")
 
-    # Step 4: Merge analysis into game data
-    print("[5/5] Generating output...")
-    for g in indie_games:
-        aid = str(g["appid"])
-        if aid in analyses:
-            g["analysis"] = analyses[aid]
-        else:
-            g["analysis"] = generate_fallback_analysis(g)
+    print("[5/5] Writing JSON outputs...")
+    for game in games:
+        game["analysis"] = analyses.get(str(game["appid"])) or analyze_game(game)
 
-    # Build output
+    trends: dict[str, int] = {}
+    for game in games:
+        trend = game["analysis"]["trend_category"]
+        trends[trend] = trends.get(trend, 0) + 1
+
     output = {
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "week_of": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
         "total_checked": checked,
-        "total_indie": len(indie_games),
-        "used_ai": not args.no_ai and bool(api_key),
-        "games": indie_games,
+        "total_indie": len(games),
+        "used_ai": not args.no_ai and bool(analyses),
+        "scope": "this_week_hot_indie_only",
+        "excluded": "AAA and large-publisher games",
+        "trend_summary": sorted(trends.items(), key=lambda item: item[1], reverse=True),
+        "games": games,
     }
-
-    # Save
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
-    output_path = os.path.join(OUTPUT_DIR, "weekly.json")
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(output, f, ensure_ascii=False, indent=2)
-
-    # Also save a timestamped archive
-    archive_path = os.path.join(OUTPUT_DIR, f"archive_{output['week_of']}.json")
-    with open(archive_path, "w", encoding="utf-8") as f:
-        json.dump(output, f, ensure_ascii=False, indent=2)
-
-    # Update archive index
-    archive_files = [f for f in os.listdir(OUTPUT_DIR) if f.startswith("archive_") and f.endswith(".json") and f != "archive_index.json"]
-    archive_weeks = sorted([f.replace("archive_", "").replace(".json", "") for f in archive_files])
-    index_path = os.path.join(OUTPUT_DIR, "archive_index.json")
-    with open(index_path, "w", encoding="utf-8") as f:
-        json.dump({"weeks": archive_weeks}, f, ensure_ascii=False, indent=2)
-
-    print(f"\n  Saved to {output_path}")
-    print(f"  Archived to {archive_path}")
-    print(f"  Index updated: {len(archive_weeks)} weeks tracked")
-    print(f"\n{'=' * 60}")
-    print(f"Done! {len(indie_games)} indie games analyzed.")
-    print(f"{'=' * 60}")
+    write_outputs(output)
+    print(f"Done: wrote {len(games)} games for {output['week_of']}")
 
 
 if __name__ == "__main__":

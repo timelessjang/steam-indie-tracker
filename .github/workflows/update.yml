@@ -1,10 +1,16 @@
 name: Weekly Steam Indie Fetch
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/**'
+      - 'tests/**'
+      - 'index.html'
+      - '.github/workflows/update.yml'
   schedule:
-    # Every Tuesday at 10:00 UTC (Steam updates weekly charts on Tuesdays)
     - cron: '0 10 * * 2'
-  workflow_dispatch:  # Allow manual trigger
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -12,7 +18,7 @@ permissions:
 jobs:
   fetch:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     env:
       PYTHONUTF8: "1"
     steps:
@@ -27,17 +33,15 @@ jobs:
       - name: Run tests
         run: python -m unittest discover -s tests -v
 
-      - name: Run fetch script
+      - name: Fetch this week's indie data
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: |
-          python scripts/fetch.py
+        run: python scripts/fetch.py
 
       - name: Commit and push data
         run: |
           git config user.name "Steam Indie Bot"
           git config user.email "bot@steam-indie-tracker"
           git add data/
-          # Only commit if there are changes
-          git diff --staged --quiet || git commit -m "📊 Weekly indie data update $(date +%Y-%m-%d)"
+          git diff --staged --quiet || git commit -m "Update weekly indie data $(date +%Y-%m-%d)"
           git push

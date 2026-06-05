@@ -1,439 +1,53 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Steam Indie Tracker — 每周独立游戏玩法趋势</title>
-<meta name="description" content="自动追踪Steam每周爆款独立游戏，AI拆解玩法组合，发现设计趋势。">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
-:root {
-  --bg-deep: #0a0a0f;
-  --bg-card: #12121a;
-  --bg-card-hover: #1a1a25;
-  --bg-surface: #1e1e2a;
-  --border: rgba(255,255,255,0.06);
-  --border-hover: rgba(255,255,255,0.12);
-  --text-primary: #e8e6e3;
-  --text-secondary: #8a8a9a;
-  --text-muted: #55556a;
-  --accent-fire: #ff6b35;
-  --accent-electric: #5b7fff;
-  --accent-lime: #8eff65;
-  --accent-violet: #b18cff;
-  --accent-rose: #ff6b8a;
-  --accent-gold: #ffc857;
-  --accent-cyan: #4de8d0;
-  --font-body: 'DM Sans', 'Noto Sans SC', sans-serif;
-  --font-mono: 'Space Mono', 'Noto Sans SC', monospace;
-  --font-cn: 'Noto Sans SC', sans-serif;
-}
-
-html { scroll-behavior: smooth }
-
-body {
-  font-family: var(--font-body);
-  background: var(--bg-deep);
-  color: var(--text-primary);
-  line-height: 1.6;
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-}
-
-body::before {
-  content: '';
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  opacity: 0.025;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 256px;
-}
-
-.container { max-width: 900px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1 }
-
-header { padding: 60px 0 40px; border-bottom: 1px solid var(--border) }
-
-.header-eyebrow {
-  font-family: var(--font-mono); font-size: 11px; letter-spacing: 3px;
-  text-transform: uppercase; color: var(--accent-electric); margin-bottom: 16px;
-}
-
-h1 {
-  font-family: var(--font-cn); font-weight: 700; font-size: clamp(28px, 5vw, 42px);
-  line-height: 1.2; margin-bottom: 12px;
-  background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
-
-.header-desc { font-size: 15px; color: var(--text-secondary); max-width: 600px; line-height: 1.7; font-family: var(--font-cn) }
-
-.stats-bar { display: flex; gap: 32px; padding: 28px 0; border-bottom: 1px solid var(--border); flex-wrap: wrap; align-items: flex-end }
-.stat { display: flex; flex-direction: column; gap: 4px }
-.stat-value { font-family: var(--font-mono); font-size: 22px; font-weight: 700; color: var(--text-primary) }
-.stat-label { font-size: 12px; color: var(--text-muted); font-family: var(--font-cn); letter-spacing: 0.5px }
-
-/* Week selector */
-.week-selector { margin-left: auto; display: flex; align-items: center; gap: 8px }
-.week-selector label { font-size: 12px; color: var(--text-muted); font-family: var(--font-cn) }
-.week-select {
-  font-family: var(--font-mono); font-size: 13px; padding: 6px 28px 6px 12px;
-  border-radius: 8px; border: 1px solid var(--border); background: var(--bg-card);
-  color: var(--text-primary); cursor: pointer; outline: none; transition: border-color 0.2s;
-  -webkit-appearance: none; appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%238a8a9a' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 10px center;
-}
-.week-select:hover { border-color: var(--border-hover) }
-.week-select:focus { border-color: var(--accent-electric) }
-
-.week-nav { display: flex; gap: 4px }
-.week-nav button {
-  width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--border);
-  background: var(--bg-card); color: var(--text-secondary); cursor: pointer; font-size: 14px;
-  display: flex; align-items: center; justify-content: center; transition: all 0.2s;
-}
-.week-nav button:hover:not(:disabled) { border-color: var(--border-hover); color: var(--text-primary) }
-.week-nav button:disabled { opacity: 0.3; cursor: not-allowed }
-
-/* Trend chart */
-.trend-chart-section { margin: 32px 0; padding: 24px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px }
-.trend-chart-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-electric); margin-bottom: 20px }
-.trend-chart-empty { text-align: center; padding: 40px 0; color: var(--text-muted); font-family: var(--font-cn); font-size: 13px; line-height: 1.8 }
-.chart-canvas-wrap { position: relative; width: 100%; height: 260px }
-.chart-canvas-wrap canvas { width: 100% !important; height: 100% !important }
-.chart-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border) }
-.legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); font-family: var(--font-cn) }
-.legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0 }
-
-/* Insight */
-.trend-insight { margin: 0 0 32px; padding: 20px 24px; background: linear-gradient(135deg, rgba(91,127,255,0.06) 0%, rgba(177,140,255,0.04) 100%); border: 1px solid rgba(91,127,255,0.12); border-radius: 12px }
-.trend-insight-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-electric); margin-bottom: 10px }
-.trend-insight-text { font-size: 14px; color: var(--text-secondary); line-height: 1.8; font-family: var(--font-cn) }
-
-/* Filters */
-.filters { display: flex; gap: 8px; padding: 24px 0 8px; flex-wrap: wrap }
-.filter-pill { font-family: var(--font-cn); font-size: 13px; padding: 6px 16px; border-radius: 100px; border: 1px solid var(--border); background: transparent; color: var(--text-secondary); cursor: pointer; transition: all 0.2s; white-space: nowrap }
-.filter-pill:hover { border-color: var(--border-hover); color: var(--text-primary) }
-.filter-pill.active { background: var(--accent-electric); border-color: var(--accent-electric); color: #fff }
-
-/* Game cards */
-.games-list { padding: 16px 0 60px; display: flex; flex-direction: column; gap: 16px }
-.game-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; transition: all 0.25s ease; cursor: default; position: relative; overflow: hidden; opacity: 0; transform: translateY(20px); animation: fadeUp 0.4s ease forwards }
-.game-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--card-accent, var(--accent-electric)), transparent); opacity: 0; transition: opacity 0.3s }
-.game-card:hover { background: var(--bg-card-hover); border-color: var(--border-hover); transform: translateY(-2px) }
-.game-card:hover::before { opacity: 1 }
-
-.card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 14px }
-.card-title-group { flex: 1; min-width: 0 }
-.card-title { font-size: 18px; font-weight: 700; font-family: var(--font-body); margin-bottom: 4px; display: flex; align-items: center; gap: 8px }
-.card-title a { color: var(--text-primary); text-decoration: none; transition: color 0.2s }
-.card-title a:hover { color: var(--accent-electric) }
-.card-meta { font-size: 13px; color: var(--text-muted); font-family: var(--font-cn) }
-
-.rank-badge { font-family: var(--font-mono); font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 6px; white-space: nowrap; flex-shrink: 0 }
-.rank-badge.top10 { background: rgba(255,107,53,0.12); color: var(--accent-fire) }
-.rank-badge.trending { background: rgba(142,255,101,0.1); color: var(--accent-lime) }
-.rank-badge.media { background: rgba(177,140,255,0.1); color: var(--accent-violet) }
-.rank-badge.demo { background: rgba(255,200,87,0.1); color: var(--accent-gold) }
-
-.tags-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px }
-.tag { font-size: 12px; padding: 3px 10px; border-radius: 6px; font-family: var(--font-cn); font-weight: 500; white-space: nowrap }
-.tag-0 { background: rgba(91,127,255,0.12); color: #8aadff }
-.tag-1 { background: rgba(177,140,255,0.12); color: #c9adff }
-.tag-2 { background: rgba(77,232,208,0.1); color: #6aecd6 }
-.tag-3 { background: rgba(255,107,138,0.1); color: #ff8da8 }
-.tag-4 { background: rgba(255,200,87,0.1); color: #ffd47a }
-
-.formula-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap }
-.formula-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted) }
-.formula-text { font-family: var(--font-mono); font-size: 13px; color: var(--accent-cyan); font-weight: 700 }
-.card-hook { font-size: 14px; color: var(--text-secondary); line-height: 1.7; font-family: var(--font-cn) }
-.trend-label { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-family: var(--font-cn); margin-top: 10px; background: rgba(255,200,87,0.08); color: var(--accent-gold); border: 1px solid rgba(255,200,87,0.15) }
-
-footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: center }
-footer p { font-size: 12px; color: var(--text-muted); font-family: var(--font-cn); line-height: 1.8 }
-footer a { color: var(--accent-electric); text-decoration: none }
-footer a:hover { text-decoration: underline }
-
-.loading { text-align: center; padding: 80px 0; color: var(--text-muted); font-family: var(--font-cn) }
-.loading-spinner { width: 32px; height: 32px; border: 2px solid var(--border); border-top-color: var(--accent-electric); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px }
-@keyframes spin { to { transform: rotate(360deg) } }
-.empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); font-family: var(--font-cn) }
-@keyframes fadeUp { to { opacity: 1; transform: translateY(0) } }
-
-@media (max-width: 600px) {
-  .container { padding: 0 16px }
-  header { padding: 40px 0 28px }
-  .stats-bar { gap: 16px }
-  .week-selector { margin-left: 0; margin-top: 12px; width: 100% }
-  .game-card { padding: 18px }
-  .card-top { flex-direction: column; gap: 8px }
-  .card-title { font-size: 16px }
-  .chart-canvas-wrap { height: 200px }
-}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Steam Indie Tracker | 本周热门独立游戏玩法趋势</title>
+  <meta name="description" content="每周自动追踪 Steam 本周火爆独立游戏，过滤 3A 和大厂发行作品，分析玩法标签、核心 Hook、玩法公式和趋势分类。">
+  <style>
+    :root{color-scheme:dark;--bg:#090a10;--panel:#121420;--panel2:#191c2b;--line:rgba(255,255,255,.09);--text:#f3f0e8;--muted:#a4a7b7;--dim:#696e83;--blue:#7aa2ff;--green:#89f27d;--gold:#ffd166;--cyan:#58e6d9;--shadow:0 18px 60px rgba(0,0,0,.35)}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,rgba(122,162,255,.18),transparent 28rem),radial-gradient(circle at 80% 0,rgba(255,122,168,.10),transparent 24rem),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans-serif;line-height:1.65}a{color:inherit}.wrap{width:min(1120px,calc(100% - 32px));margin:0 auto}header{padding:72px 0 36px}.eyebrow{color:var(--blue);font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase}h1{margin:14px 0;font-size:clamp(34px,7vw,76px);line-height:.98;letter-spacing:-.06em}.lead{max-width:760px;color:var(--muted);font-size:18px}.toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:28px}.pill{border:1px solid var(--line);background:rgba(255,255,255,.035);border-radius:999px;padding:8px 13px;color:var(--muted);font-size:13px}select,button{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:12px;padding:10px 12px;font:inherit}button{cursor:pointer}button.active{background:var(--blue);border-color:var(--blue);color:#071022;font-weight:800}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:22px 0 28px}.stat{background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.025));border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:var(--shadow)}.stat b{display:block;font-size:26px;line-height:1.1}.stat span{color:var(--dim);font-size:13px}.insight{border:1px solid rgba(122,162,255,.22);background:rgba(122,162,255,.08);border-radius:22px;padding:20px;margin:22px 0}.insight h2,.section-title{margin:0 0 10px;font-size:14px;letter-spacing:.12em;color:var(--blue);text-transform:uppercase}.filters{display:flex;flex-wrap:wrap;gap:10px;margin:24px 0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;padding-bottom:64px}.card{background:linear-gradient(180deg,rgba(25,28,43,.96),rgba(18,20,32,.96));border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:var(--shadow)}.hero{display:block;width:100%;aspect-ratio:460/215;object-fit:cover;background:var(--panel2)}.card-body{padding:18px}.topline{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.name{margin:0;font-size:21px;line-height:1.2;letter-spacing:-.02em}.badge{flex:none;color:#071022;background:var(--green);font-weight:800;border-radius:999px;padding:4px 9px;font-size:12px}.meta{color:var(--dim);font-size:13px;margin-top:7px}.tags{display:flex;flex-wrap:wrap;gap:7px;margin:16px 0 12px}.tag{border-radius:999px;padding:4px 9px;font-size:12px;background:rgba(122,162,255,.13);color:#bdd0ff}.formula{color:var(--cyan);font-weight:800;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.hook{color:var(--muted);margin:10px 0 0}.trend{display:inline-block;margin-top:14px;color:var(--gold);font-size:13px}.empty,.loading{color:var(--muted);padding:48px 0;text-align:center}footer{border-top:1px solid var(--line);padding:28px 0 42px;color:var(--dim);font-size:13px}@media(max-width:760px){header{padding-top:44px}.stats,.grid{grid-template-columns:1fr}.lead{font-size:16px}}
+  </style>
 </head>
 <body>
-<div class="container">
-  <header>
-    <div class="header-eyebrow">Steam Indie Tracker</div>
-    <h1>每周独立游戏<br>玩法趋势追踪</h1>
-    <p class="header-desc">自动追踪 Steam 每周爆款独立游戏，AI 拆解核心玩法组合，发现下一个「吸血鬼幸存者」式的设计灵感。</p>
-  </header>
-
-  <div class="stats-bar">
-    <div class="stat"><span class="stat-value" id="stat-count">—</span><span class="stat-label">本周 indie 上榜</span></div>
-    <div class="stat"><span class="stat-value" id="stat-trend">—</span><span class="stat-label">最热趋势</span></div>
-    <div class="stat"><span class="stat-value" id="stat-date">—</span><span class="stat-label">数据更新</span></div>
-    <div class="week-selector" id="week-selector" style="display:none">
-      <label>周报</label>
-      <div class="week-nav"><button id="btn-prev" title="更早">◀</button></div>
-      <select class="week-select" id="week-select"></select>
-      <div class="week-nav"><button id="btn-next" title="更近">▶</button></div>
-    </div>
-  </div>
-
-  <div class="trend-chart-section">
-    <div class="trend-chart-title">▸ 玩法趋势变化</div>
-    <div id="chart-empty" class="trend-chart-empty">积累 2 周以上数据后，这里会显示各玩法类别的热度变化折线图。<br>目前只有 1 周数据，继续追踪吧！</div>
-    <div class="chart-canvas-wrap" id="chart-wrap" style="display:none"><canvas id="trend-canvas"></canvas></div>
-    <div class="chart-legend" id="chart-legend" style="display:none"></div>
-  </div>
-
-  <div class="trend-insight" id="trend-insight" style="display:none">
-    <div class="trend-insight-title">▸ 本周趋势洞察</div>
-    <p class="trend-insight-text" id="trend-insight-text"></p>
-  </div>
-
-  <div class="filters" id="filters"></div>
-
-  <div class="games-list" id="games-list">
-    <div class="loading"><div class="loading-spinner"></div><p>正在加载数据...</p></div>
-  </div>
-
-  <footer><p>Steam Indie Tracker · 数据来源: Steam API + SteamSpy · 玩法分析: Claude AI<br>每周二自动更新 · <a href="https://github.com/timelessjang/steam-indie-tracker" target="_blank">GitHub</a></p></footer>
-</div>
-
-<script>
-const ACCENT_COLORS = ['--accent-electric','--accent-violet','--accent-cyan','--accent-rose','--accent-gold','--accent-lime','--accent-fire'];
-const CHART_COLORS = ['#5b7fff','#b18cff','#4de8d0','#ff6b8a','#ffc857','#8eff65','#ff6b35','#78c4ff','#ff9de0','#a8e86c'];
-
-let allArchives = {};
-let archiveWeeks = [];
-let currentWeekIdx = 0;
-
-async function init() {
-  // Load archive index
-  try {
-    const r = await fetch('data/archive_index.json');
-    if (r.ok) {
-      const idx = await r.json();
-      if (idx.weeks) {
-        const loads = idx.weeks.map(async w => {
-          try {
-            const rr = await fetch(`data/archive_${w}.json`);
-            if (rr.ok) allArchives[w] = await rr.json();
-          } catch(e){}
-        });
-        await Promise.all(loads);
-      }
-    }
-  } catch(e){}
-
-  // Always load weekly.json
-  try {
-    const r = await fetch('data/weekly.json');
-    if (r.ok) {
-      const d = await r.json();
-      allArchives[d.week_of] = d;
-    }
-  } catch(e){}
-
-  archiveWeeks = Object.keys(allArchives).sort().reverse();
-
-  if (!archiveWeeks.length) {
-    document.getElementById('games-list').innerHTML = '<div class="empty-state"><p>暂无数据</p><p style="margin-top:8px;font-size:13px">请先运行 <code style="background:var(--bg-surface);padding:2px 8px;border-radius:4px">python scripts/fetch.py</code></p></div>';
-    return;
-  }
-
-  if (archiveWeeks.length > 1) buildWeekSelector();
-  showWeek(0);
-  buildTrendChart();
-}
-
-function buildWeekSelector() {
-  document.getElementById('week-selector').style.display = 'flex';
-  const sel = document.getElementById('week-select');
-  sel.innerHTML = '';
-  archiveWeeks.forEach((w,i) => {
-    const o = document.createElement('option');
-    o.value = i; o.textContent = w + (i===0?' (最新)':'');
-    sel.appendChild(o);
-  });
-  sel.onchange = () => { currentWeekIdx = +sel.value; showWeek(currentWeekIdx); updateNav() };
-  document.getElementById('btn-prev').onclick = () => { if(currentWeekIdx<archiveWeeks.length-1){currentWeekIdx++;sel.value=currentWeekIdx;showWeek(currentWeekIdx);updateNav()} };
-  document.getElementById('btn-next').onclick = () => { if(currentWeekIdx>0){currentWeekIdx--;sel.value=currentWeekIdx;showWeek(currentWeekIdx);updateNav()} };
-  updateNav();
-}
-
-function updateNav() {
-  document.getElementById('btn-prev').disabled = currentWeekIdx >= archiveWeeks.length-1;
-  document.getElementById('btn-next').disabled = currentWeekIdx <= 0;
-}
-
-function showWeek(idx) {
-  const data = allArchives[archiveWeeks[idx]];
-  if(!data) return;
-
-  document.getElementById('stat-count').textContent = data.total_indie || data.games.length;
-  document.getElementById('stat-date').textContent = data.week_of;
-
-  const tc = {};
-  data.games.forEach(g => { const c=g.analysis?.trend_category; if(c&&c!=='待分析') tc[c]=(tc[c]||0)+1 });
-  const top = Object.entries(tc).sort((a,b)=>b[1]-a[1])[0];
-  document.getElementById('stat-trend').textContent = top ? top[0] : '—';
-
-  const ins = document.getElementById('trend-insight');
-  if(top){ ins.style.display='block'; document.getElementById('trend-insight-text').textContent=genInsight(data.games,tc) }
-  else ins.style.display='none';
-
-  const cats = [...new Set(data.games.map(g=>g.analysis?.trend_category).filter(c=>c&&c!=='待分析'))];
-  buildFilters(cats, data.games);
-  renderGames(data.games);
-}
-
-function buildTrendChart() {
-  if(archiveWeeks.length < 2) {
-    document.getElementById('chart-empty').style.display='block';
-    document.getElementById('chart-wrap').style.display='none';
-    document.getElementById('chart-legend').style.display='none';
-    return;
-  }
-  document.getElementById('chart-empty').style.display='none';
-  document.getElementById('chart-wrap').style.display='block';
-  document.getElementById('chart-legend').style.display='flex';
-
-  const weeks = [...archiveWeeks].reverse();
-  const allCats = new Set();
-  weeks.forEach(w => { allArchives[w]?.games.forEach(g => { const c=g.analysis?.trend_category; if(c&&c!=='待分析') allCats.add(c) }) });
-  const cats = [...allCats];
-  const series = {};
-  cats.forEach(cat => { series[cat] = weeks.map(w => (allArchives[w]?.games||[]).filter(g=>g.analysis?.trend_category===cat).length) });
-  drawChart(weeks, cats, series);
-}
-
-function drawChart(weeks, cats, series) {
-  const canvas = document.getElementById('trend-canvas');
-  const wrap = document.getElementById('chart-wrap');
-  const dpr = window.devicePixelRatio||1;
-  canvas.width = wrap.offsetWidth*dpr; canvas.height = wrap.offsetHeight*dpr;
-  canvas.style.width = wrap.offsetWidth+'px'; canvas.style.height = wrap.offsetHeight+'px';
-  const ctx = canvas.getContext('2d'); ctx.scale(dpr,dpr);
-
-  const W=wrap.offsetWidth, H=wrap.offsetHeight;
-  const pad={top:20,right:20,bottom:40,left:36};
-  const cW=W-pad.left-pad.right, cH=H-pad.top-pad.bottom;
-  ctx.clearRect(0,0,W,H);
-
-  let mx=1;
-  cats.forEach(c=>series[c].forEach(v=>{if(v>mx)mx=v}));
-  mx=Math.ceil(mx*1.2);
-
-  // Grid
-  ctx.strokeStyle='rgba(255,255,255,0.05)'; ctx.lineWidth=1;
-  const gl=Math.min(mx,5);
-  for(let i=0;i<=gl;i++){
-    const y=pad.top+cH-(i/gl)*cH;
-    ctx.beginPath();ctx.moveTo(pad.left,y);ctx.lineTo(pad.left+cW,y);ctx.stroke();
-    ctx.fillStyle='#55556a';ctx.font='11px "Space Mono",monospace';ctx.textAlign='right';
-    ctx.fillText(Math.round(i/gl*mx),pad.left-8,y+4);
-  }
-
-  // X labels
-  ctx.textAlign='center';ctx.fillStyle='#55556a';ctx.font='11px "Space Mono",monospace';
-  weeks.forEach((w,i)=>{
-    const x=pad.left+(weeks.length===1?cW/2:(i/(weeks.length-1))*cW);
-    ctx.fillText(w.slice(5),x,H-pad.bottom+20);
-  });
-
-  // Lines
-  cats.forEach((cat,ci)=>{
-    const color=CHART_COLORS[ci%CHART_COLORS.length];
-    const vals=series[cat];
-    ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.lineJoin='round';ctx.lineCap='round';
-    ctx.beginPath();
-    vals.forEach((v,i)=>{
-      const x=pad.left+(weeks.length===1?cW/2:(i/(weeks.length-1))*cW);
-      const y=pad.top+cH-(v/mx)*cH;
-      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
-    });
-    ctx.stroke();
-    // Dots
-    vals.forEach((v,i)=>{
-      const x=pad.left+(weeks.length===1?cW/2:(i/(weeks.length-1))*cW);
-      const y=pad.top+cH-(v/mx)*cH;
-      ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fill();
-      ctx.fillStyle='#12121a';ctx.beginPath();ctx.arc(x,y,2,0,Math.PI*2);ctx.fill();
-    });
-  });
-
-  // Legend
-  const leg=document.getElementById('chart-legend');leg.innerHTML='';
-  cats.forEach((cat,ci)=>{
-    const c=CHART_COLORS[ci%CHART_COLORS.length];
-    const d=document.createElement('div');d.className='legend-item';
-    d.innerHTML=`<span class="legend-dot" style="background:${c}"></span>${cat}`;
-    leg.appendChild(d);
-  });
-}
-
-function genInsight(games, tc) {
-  const s=Object.entries(tc).sort((a,b)=>b[1]-a[1]);
-  if(!s.length) return '';
-  const parts=s.map(([c,n])=>`「${c}」(${n}款)`);
-  const topG=games.filter(g=>g.analysis?.trend_category===s[0][0]).map(g=>g.name);
-  return `本周趋势分布：${parts.join('、')}。 其中${s[0][0]}表现最强，代表作品：${topG.join('、')}。`+(s.length>1?` ${s[1][0]}紧随其后。`:'');
-}
-
-function buildFilters(cats, games) {
-  const c=document.getElementById('filters');c.innerHTML='';
-  const a=document.createElement('button');a.className='filter-pill active';a.textContent=`全部 (${games.length})`;
-  a.onclick=()=>{document.querySelectorAll('.filter-pill').forEach(p=>p.classList.remove('active'));a.classList.add('active');renderGames(games)};
-  c.appendChild(a);
-  cats.forEach(cat=>{
-    const n=games.filter(g=>g.analysis?.trend_category===cat).length;
-    const b=document.createElement('button');b.className='filter-pill';b.textContent=`${cat} (${n})`;
-    b.onclick=()=>{document.querySelectorAll('.filter-pill').forEach(p=>p.classList.remove('active'));b.classList.add('active');renderGames(games.filter(g=>g.analysis?.trend_category===cat))};
-    c.appendChild(b);
-  });
-}
-
-function renderGames(games) {
-  const l=document.getElementById('games-list');l.innerHTML='';
-  if(!games.length){l.innerHTML='<div class="empty-state"><p>没有符合条件的游戏</p></div>';return}
-  games.forEach((game,i)=>{
-    const card=document.createElement('div');card.className='game-card';
-    card.style.animationDelay=`${i*0.06}s`;
-    card.style.setProperty('--card-accent',`var(${ACCENT_COLORS[i%ACCENT_COLORS.length]})`);
-    let badge='';
-    if(game.rank&&game.rank<=10) badge=`<span class="rank-badge top10">#${game.rank} 周榜</span>`;
-    else if(game.source==='social_media_trending') badge='<span class="rank-badge demo">Demo 热门</span>';
-    else if(game.source==='media_recommended') badge='<span class="rank-badge media">媒体热推</span>';
-    else if(game.source==='popular_new') badge='<span class="rank-badge trending">热门新品</span>';
-    const tags=(game.analysis?.gameplay_tags||[]).map((t,j)=>`<span class="tag tag-${j%5}">${t}</span>`).join('');
-    const formula=game.analysis?.formula||'';
-    const hook=game.analysis?.hook||game.short_description;
-    const tc=game.analysis?.trend_category;
-    const url=game.url||`https://store.steampowered.com/app/${game.appid}/`;
-    card.innerHTML=`<div class="card-top"><div class="card-title-group"><div class="card-title"><a href="${url}" target="_blank" rel="noopener">${game.name}</a></div><div class="card-meta">${game.developer} · ${game.release_date} · ${game.price}</div></div>${badge}</div><div class="tags-row">${tags}</div>${formula?`<div class="formula-row"><span class="formula-label">玩法公式</span><span class="formula-text">${formula}</span></div>`:''}<p class="card-hook">${hook}</p>${tc&&tc!=='待分析'?`<span class="trend-label">${tc}</span>`:''}`;
-    l.appendChild(card);
-  });
-}
-
-let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(archiveWeeks.length>=2)buildTrendChart()},200)});
-init();
-</script>
+  <main class="wrap">
+    <header>
+      <div class="eyebrow">Steam Indie Tracker</div>
+      <h1>本周热门独立游戏玩法趋势</h1>
+      <p class="lead">自动扫描 Steam 本周热榜与热门新品，只保留独立团队作品，过滤 3A 与大厂发行游戏，并拆解玩法标签、核心 Hook、玩法公式和趋势分类。</p>
+      <div class="toolbar">
+        <span class="pill">数据源：Steam + SteamSpy</span>
+        <span class="pill">范围：本周火爆独立游戏</span>
+        <span class="pill">排除：3A / 大厂发行</span>
+        <select id="weekSelect" aria-label="选择周报"></select>
+      </div>
+    </header>
+    <section class="stats">
+      <div class="stat"><b id="count">-</b><span>本周入选</span></div>
+      <div class="stat"><b id="checked">-</b><span>扫描候选</span></div>
+      <div class="stat"><b id="topTrend">-</b><span>最热趋势</span></div>
+      <div class="stat"><b id="date">-</b><span>更新日期</span></div>
+    </section>
+    <section class="insight" id="insight" hidden><h2>本周观察</h2><p id="insightText"></p></section>
+    <section><div class="section-title">Trend Filters</div><div class="filters" id="filters"></div></section>
+    <section class="grid" id="games"><div class="loading">正在加载本周数据...</div></section>
+  </main>
+  <footer class="wrap">每周二自动更新。开源仓库：<a href="https://github.com/timelessjang/steam-indie-tracker">timelessjang/steam-indie-tracker</a></footer>
+  <script>
+    const state={archives:{},weeks:[],data:null,filter:"all"};const $=id=>document.getElementById(id);
+    async function loadJson(url){const res=await fetch(url,{cache:"no-store"});if(!res.ok)throw new Error(`${url}: ${res.status}`);return res.json()}
+    async function init(){try{const index=await loadJson("data/archive_index.json");await Promise.all((index.weeks||[]).map(async week=>{try{state.archives[week]=await loadJson(`data/archive_${week}.json`)}catch{}}))}catch{}try{const weekly=await loadJson("data/weekly.json");state.archives[weekly.week_of]=weekly}catch{}state.weeks=Object.keys(state.archives).sort().reverse();if(!state.weeks.length){$("games").innerHTML='<div class="empty">还没有数据。请先运行 GitHub Actions 或 python scripts/fetch.py。</div>';return}buildWeekSelect();showWeek(state.weeks[0])}
+    function buildWeekSelect(){const select=$("weekSelect");select.innerHTML=state.weeks.map((week,index)=>`<option value="${week}">${week}${index===0?" 最新":""}</option>`).join("");select.onchange=()=>showWeek(select.value)}
+    function showWeek(week){state.data=state.archives[week];state.filter="all";render()}
+    function render(){const data=state.data;const games=data.games||[];const trends={};for(const game of games){const trend=game.analysis?.trend_category||"未分类";trends[trend]=(trends[trend]||0)+1}const ranked=Object.entries(trends).sort((a,b)=>b[1]-a[1]);$("count").textContent=data.total_indie??games.length;$("checked").textContent=data.total_checked??"-";$("topTrend").textContent=ranked[0]?.[0]||"-";$("date").textContent=data.week_of||"-";renderInsight(ranked,games);renderFilters(ranked);renderGames()}
+    function renderInsight(ranked,games){if(!ranked.length){$("insight").hidden=true;return}const[trend,count]=ranked[0];const examples=games.filter(g=>g.analysis?.trend_category===trend).slice(0,3).map(g=>g.name).join("、");$("insight").hidden=false;$("insightText").textContent=`本周最明显的方向是「${trend}」，共有 ${count} 款入选，代表作品包括 ${examples}。这些作品共同说明：小团队仍在用清晰的机制组合和强 Hook 对抗大制作的内容规模。`}
+    function renderFilters(ranked){const filters=$("filters");filters.innerHTML=`<button class="${state.filter==="all"?"active":""}" data-filter="all">全部</button>`+ranked.map(([trend,count])=>`<button class="${state.filter===trend?"active":""}" data-filter="${escapeHtml(trend)}">${escapeHtml(trend)} (${count})</button>`).join("");filters.querySelectorAll("button").forEach(button=>{button.onclick=()=>{state.filter=button.dataset.filter;renderFilters(ranked);renderGames()}})}
+    function renderGames(){let games=state.data.games||[];if(state.filter!=="all")games=games.filter(game=>game.analysis?.trend_category===state.filter);$("games").innerHTML=games.map(renderCard).join("")||'<div class="empty">这个分类下暂无游戏。</div>'}
+    function sourceBadge(game){if(game.rank)return`#${game.rank} 周榜`;if((game.source||"").includes("popular_new"))return"热门新品";if((game.source||"").includes("top_sellers"))return"热销";return"趋势"}
+    function renderCard(game){const analysis=game.analysis||{};const tags=(analysis.gameplay_tags||[]).map(tag=>`<span class="tag">${escapeHtml(tag)}</span>`).join("");const image=game.header_image?`<img class="hero" src="${game.header_image}" alt="${escapeHtml(game.name)}">`:"";return`<article class="card">${image}<div class="card-body"><div class="topline"><div><h3 class="name"><a href="${game.url}" target="_blank" rel="noopener">${escapeHtml(game.name)}</a></h3><div class="meta">${escapeHtml(game.developer||"独立开发者")} · ${escapeHtml(game.release_date||"日期未知")} · ${escapeHtml(game.price||"N/A")}</div></div><span class="badge">${escapeHtml(sourceBadge(game))}</span></div><div class="tags">${tags}</div><div class="formula">${escapeHtml(analysis.formula||"")}</div><p class="hook">${escapeHtml(analysis.hook||game.short_description||"")}</p><span class="trend">${escapeHtml(analysis.trend_category||"未分类")}</span></div></article>`}
+    function escapeHtml(value){return String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]))}
+    init();
+  </script>
 </body>
 </html>
