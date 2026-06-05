@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-05T01:57:25Z",
+  "generated_at": "2026-06-05T02:01:39Z",
   "week_of": "2026-06-05",
-  "total_checked": 69,
+  "total_checked": 58,
   "total_indie": 15,
   "used_ai": false,
   "scope": "this_week_hot_indie_only",
@@ -9,26 +9,26 @@
   "trend_summary": [
     [
       "生存建造热",
-      7
+      5
+    ],
+    [
+      "高强度动作变体",
+      4
     ],
     [
       "自动化与经营模拟",
       3
     ],
     [
-      "高强度动作变体",
-      2
+      "小体量恐怖叙事",
+      1
     ],
     [
       "策略解谜混合",
       1
     ],
     [
-      "小体量恐怖叙事",
-      1
-    ],
-    [
-      "独立新品综合热",
+      "Roguelike 与卡牌变体",
       1
     ]
   ],
@@ -46,8 +46,8 @@
         "Early Access"
       ],
       "top_tags": [],
-      "release_date": "25 May, 2026",
-      "price": "38,99€",
+      "release_date": "May 25, 2026",
+      "price": "$39.99",
       "rank": 5,
       "source": "weekly_top_sellers,popular_new,top_sellers,trending",
       "heat_score": 681,
@@ -94,11 +94,11 @@
         "Shooter",
         "Co-op"
       ],
-      "release_date": "8 Feb, 2018",
-      "price": "39,99€",
+      "release_date": "Feb 8, 2018",
+      "price": "$39.99",
       "rank": null,
       "source": "popular_new,top_sellers,trending",
-      "heat_score": 458,
+      "heat_score": 459,
       "indie_confidence": "high",
       "indie_reason": "Steam marks it as Indie and no large publisher matched",
       "analysis": {
@@ -128,11 +128,11 @@
         "Simulation"
       ],
       "top_tags": [],
-      "release_date": "1 May, 2026",
-      "price": "CDN$ 10.49",
+      "release_date": "May 1, 2026",
+      "price": "$7.99",
       "rank": null,
       "source": "popular_new,top_sellers,trending",
-      "heat_score": 422,
+      "heat_score": 426,
       "indie_confidence": "high",
       "indie_reason": "Steam marks it as Indie and no large publisher matched",
       "analysis": {
@@ -157,11 +157,11 @@
         "Adventure"
       ],
       "top_tags": [],
-      "release_date": "28 May, 2026",
-      "price": "CDN$ 23.99",
+      "release_date": "May 28, 2026",
+      "price": "$19.99",
       "rank": null,
       "source": "popular_new,top_sellers,trending",
-      "heat_score": 409,
+      "heat_score": 410,
       "indie_confidence": "medium",
       "indie_reason": "small publisher with indie-range price",
       "analysis": {
@@ -172,6 +172,56 @@
         "hook": "Take control of Mina, a renowned Hollower hurtled into a desperate mission to rescue a cu...",
         "formula": "Action + Adventure",
         "trend_category": "高强度动作变体"
+      }
+    },
+    {
+      "appid": 1144200,
+      "name": "Ready or Not",
+      "url": "https://store.steampowered.com/app/1144200/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1144200/header.jpg?t=1779907126",
+      "short_description": "Ready or Not is an intense, tactical, first-person shooter that depicts a modern-day world in which SWAT police units are called to defuse hostile and confronting situations.",
+      "developer": "VOID Interactive",
+      "publisher": "VOID Interactive",
+      "genres": [
+        "Action",
+        "Adventure",
+        "Indie"
+      ],
+      "top_tags": [
+        "Tactical",
+        "Realistic",
+        "FPS",
+        "Shooter",
+        "Multiplayer",
+        "Co-op",
+        "Singleplayer",
+        "Horror",
+        "First-Person",
+        "Action",
+        "Violent",
+        "Combat",
+        "Gun Customization",
+        "Crime",
+        "Gore"
+      ],
+      "release_date": "Dec 13, 2023",
+      "price": "$49.99",
+      "rank": null,
+      "source": "popular_new,top_sellers,trending",
+      "heat_score": 385,
+      "indie_confidence": "high",
+      "indie_reason": "Steam marks it as Indie and no large publisher matched",
+      "analysis": {
+        "gameplay_tags": [
+          "射击",
+          "第一人称射击",
+          "恐怖",
+          "合作",
+          "多人联机"
+        ],
+        "hook": "Ready or Not is an intense, tactical, first-person shooter that depicts a modern-day worl...",
+        "formula": "射击 + 第一人称射击 + 恐怖",
+        "trend_category": "小体量恐怖叙事"
       }
     },
     {
@@ -192,7 +242,7 @@
       "price": "22,99€",
       "rank": null,
       "source": "popular_new,top_sellers,trending",
-      "heat_score": 402,
+      "heat_score": 377,
       "indie_confidence": "high",
       "indie_reason": "Steam marks it as Indie and no large publisher matched",
       "analysis": {
@@ -235,11 +285,11 @@
         "Atmospheric",
         "Sandbox"
       ],
-      "release_date": "22 Feb, 2024",
-      "price": "8,69€",
+      "release_date": "Feb 22, 2024",
+      "price": "$8.99",
       "rank": null,
       "source": "popular_new,top_sellers,trending",
-      "heat_score": 382,
+      "heat_score": 367,
       "indie_confidence": "high",
       "indie_reason": "Steam marks it as Indie and no large publisher matched",
       "analysis": {
@@ -253,171 +303,6 @@
         "hook": "Sent to find a missing billionaire on a remote island, you find yourself in a cannibal-in...",
         "formula": "生存 + 制作建造 + 模拟",
         "trend_category": "生存建造热"
-      }
-    },
-    {
-      "appid": 526870,
-      "name": "Satisfactory",
-      "url": "https://store.steampowered.com/app/526870/",
-      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/526870/header.jpg?t=1780413533",
-      "short_description": "Satisfactory is a first-person open-world factory building game with a dash of exploration and combat. Play alone or with friends, explore an alien planet, create multi-story factories, and enter conveyor belt heaven!",
-      "developer": "Coffee Stain Studios",
-      "publisher": "Coffee Stain Publishing",
-      "genres": [
-        "Adventure",
-        "Indie",
-        "Simulation",
-        "Strategy"
-      ],
-      "top_tags": [
-        "Base-Building",
-        "Automation",
-        "Open World",
-        "Multiplayer",
-        "Crafting",
-        "Co-op",
-        "Building",
-        "Resource Management",
-        "Sandbox",
-        "Exploration",
-        "Adventure",
-        "Open World Survival Craft",
-        "Survival",
-        "First-Person",
-        "Simulation"
-      ],
-      "release_date": "10 Sep, 2024",
-      "price": "CDN$ 36.39",
-      "rank": null,
-      "source": "popular_new,top_sellers,trending",
-      "heat_score": 366,
-      "indie_confidence": "high",
-      "indie_reason": "Steam marks it as Indie and no large publisher matched",
-      "analysis": {
-        "gameplay_tags": [
-          "生存",
-          "制作建造",
-          "自动化",
-          "经营管理",
-          "模拟"
-        ],
-        "hook": "Satisfactory is a first-person open-world factory building game with a dash of exploratio...",
-        "formula": "生存 + 制作建造 + 自动化",
-        "trend_category": "生存建造热"
-      }
-    },
-    {
-      "appid": 1144200,
-      "name": "Ready or Not",
-      "url": "https://store.steampowered.com/app/1144200/",
-      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1144200/header.jpg?t=1779907126",
-      "short_description": "Ready or Not is an intense, tactical, first-person shooter that depicts a modern-day world in which SWAT police units are called to defuse hostile and confronting situations.",
-      "developer": "VOID Interactive",
-      "publisher": "VOID Interactive",
-      "genres": [
-        "Action",
-        "Adventure",
-        "Indie"
-      ],
-      "top_tags": [
-        "Tactical",
-        "Realistic",
-        "FPS",
-        "Shooter",
-        "Multiplayer",
-        "Co-op",
-        "Singleplayer",
-        "Horror",
-        "First-Person",
-        "Action",
-        "Violent",
-        "Combat",
-        "Gun Customization",
-        "Crime",
-        "Gore"
-      ],
-      "release_date": "13 Dec, 2023",
-      "price": "CDN$ 59.99",
-      "rank": null,
-      "source": "popular_new,top_sellers,trending",
-      "heat_score": 360,
-      "indie_confidence": "high",
-      "indie_reason": "Steam marks it as Indie and no large publisher matched",
-      "analysis": {
-        "gameplay_tags": [
-          "射击",
-          "第一人称射击",
-          "恐怖",
-          "合作",
-          "多人联机"
-        ],
-        "hook": "Ready or Not is an intense, tactical, first-person shooter that depicts a modern-day worl...",
-        "formula": "射击 + 第一人称射击 + 恐怖",
-        "trend_category": "小体量恐怖叙事"
-      }
-    },
-    {
-      "appid": 3041230,
-      "name": "Windrose",
-      "url": "https://store.steampowered.com/app/3041230/",
-      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3041230/7e838d87d787735d5d29d72777c5ee55653dfb2b/header.jpg?t=1777529081",
-      "short_description": "Embark on a PvE survival adventure in the Age of Piracy. Fight on land and sea, solo or with friends. Build, craft and explore vast open world filled with dark secrets. Master soulslite combat and take on challenging bosses, command your ship and plunder unspoken treasures!",
-      "developer": "Kraken Express",
-      "publisher": "Kraken Express, Pocketpair Publishing (Japan)",
-      "genres": [
-        "Action",
-        "Adventure",
-        "RPG",
-        "Early Access"
-      ],
-      "top_tags": [],
-      "release_date": "14 Apr, 2026",
-      "price": "CDN$ 39.99",
-      "rank": null,
-      "source": "popular_new,top_sellers,trending",
-      "heat_score": 347,
-      "indie_confidence": "medium",
-      "indie_reason": "small publisher with indie-range price",
-      "analysis": {
-        "gameplay_tags": [
-          "Action",
-          "Adventure",
-          "RPG",
-          "Early Access"
-        ],
-        "hook": "Embark on a PvE survival adventure in the Age of Piracy. Fight on land and sea, solo or w...",
-        "formula": "Action + Adventure + RPG",
-        "trend_category": "高强度动作变体"
-      }
-    },
-    {
-      "appid": 4197610,
-      "name": "Librarian: Tidy Up the Arcane Library!",
-      "url": "https://store.steampowered.com/app/4197610/",
-      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4197610/2162be8e12b6bcbf696e508a4b6297c378c33bda/header.jpg?t=1777553917",
-      "short_description": "Librarian: Tidy Up the Arcane Library! is a single-player simulation. You need return scattered books to proper places in an Arcane Library. As completed rows of bookshelves, you can learn ability to improve your efficiency. Use your skills and strategies to shelve 3,072 books as quick as you can.",
-      "developer": "ArtRising",
-      "publisher": "ArtRising",
-      "genres": [
-        "Casual",
-        "Indie",
-        "Simulation"
-      ],
-      "top_tags": [],
-      "release_date": "30 Apr, 2026",
-      "price": "CDN$ 7.19",
-      "rank": null,
-      "source": "popular_new,top_sellers,trending",
-      "heat_score": 342,
-      "indie_confidence": "high",
-      "indie_reason": "Steam marks it as Indie and no large publisher matched",
-      "analysis": {
-        "gameplay_tags": [
-          "模拟"
-        ],
-        "hook": "Librarian: Tidy Up the Arcane Library! is a single-player simulation. You need return sca...",
-        "formula": "模拟",
-        "trend_category": "自动化与经营模拟"
       }
     },
     {
@@ -453,10 +338,10 @@
         "Action"
       ],
       "release_date": "18 Oct, 2022",
-      "price": "CLP$ 4.025",
+      "price": "6,82€",
       "rank": null,
       "source": "popular_new,top_sellers,trending",
-      "heat_score": 327,
+      "heat_score": 353,
       "indie_confidence": "high",
       "indie_reason": "Steam marks it as Indie and no large publisher matched",
       "analysis": {
@@ -472,182 +357,281 @@
       }
     },
     {
-      "appid": 2057760,
-      "name": "Esoteric Ebb",
-      "url": "https://store.steampowered.com/app/2057760/",
-      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2057760/3fc3e737678a0d5db6816609bec2c9c6f2c11a88/header.jpg?t=1776091835",
-      "short_description": "Esoteric Ebb is a single-player CRPG inspired by the freedom of tabletop adventures. Unravel a political conspiracy with your goblin sidekick. Roll dice in tense encounters. Become a cleric of legends or completely ruin the campaign.",
-      "developer": "Christoffer Bodegård",
-      "publisher": "Raw Fury",
-      "genres": [
-        "Indie",
-        "RPG"
-      ],
-      "top_tags": [],
-      "release_date": "3 Mar, 2026",
-      "price": "CDN$ 26.00",
-      "rank": null,
-      "source": "popular_new,top_sellers,trending",
-      "heat_score": 293,
-      "indie_confidence": "high",
-      "indie_reason": "Steam marks it as Indie and no large publisher matched",
-      "analysis": {
-        "gameplay_tags": [
-          "Indie",
-          "RPG"
-        ],
-        "hook": "Esoteric Ebb is a single-player CRPG inspired by the freedom of tabletop adventures. Unra...",
-        "formula": "Indie + RPG",
-        "trend_category": "独立新品综合热"
-      }
-    },
-    {
-      "appid": 3164500,
-      "name": "Schedule I",
-      "url": "https://store.steampowered.com/app/3164500/",
-      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3164500/header.jpg?t=1773974661",
-      "short_description": "From small-time dope pusher to kingpin - manufacture and distribute a range of drugs throughout the grungy city of Hyland Point. Expand your empire with properties, businesses, employees and more.",
-      "developer": "TVGS",
-      "publisher": "TVGS",
+      "appid": 3041230,
+      "name": "Windrose",
+      "url": "https://store.steampowered.com/app/3041230/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3041230/7e838d87d787735d5d29d72777c5ee55653dfb2b/header.jpg?t=1777529081",
+      "short_description": "Embark on a PvE survival adventure in the Age of Piracy. Fight on land and sea, solo or with friends. Build, craft and explore vast open world filled with dark secrets. Master soulslite combat and take on challenging bosses, command your ship and plunder unspoken treasures!",
+      "developer": "Kraken Express",
+      "publisher": "Kraken Express, Pocketpair Publishing (Japan)",
       "genres": [
         "Action",
-        "Indie",
-        "Simulation",
-        "Strategy",
+        "Adventure",
+        "RPG",
         "Early Access"
       ],
-      "top_tags": [
-        "Simulation",
-        "Co-op",
-        "Crime",
-        "Multiplayer",
-        "Open World",
-        "Management",
-        "First-Person",
-        "Action",
-        "Crafting",
-        "Base-Building",
-        "Automation",
-        "Building",
-        "Stealth",
-        "Strategy",
-        "FPS"
-      ],
-      "release_date": "24 Mar, 2025",
-      "price": "CDN$ 25.99",
+      "top_tags": [],
+      "release_date": "Apr 14, 2026",
+      "price": "$29.99",
       "rank": null,
       "source": "popular_new,top_sellers,trending",
-      "heat_score": 255,
-      "indie_confidence": "high",
-      "indie_reason": "Steam marks it as Indie and no large publisher matched",
+      "heat_score": 343,
+      "indie_confidence": "medium",
+      "indie_reason": "small publisher with indie-range price",
       "analysis": {
         "gameplay_tags": [
-          "制作建造",
-          "自动化",
-          "经营管理",
-          "模拟",
-          "策略"
+          "Action",
+          "Adventure",
+          "RPG",
+          "Early Access"
         ],
-        "hook": "From small-time dope pusher to kingpin - manufacture and distribute a range of drugs thro...",
-        "formula": "制作建造 + 自动化 + 经营管理",
-        "trend_category": "生存建造热"
+        "hook": "Embark on a PvE survival adventure in the Age of Piracy. Fight on land and sea, solo or w...",
+        "formula": "Action + Adventure + RPG",
+        "trend_category": "高强度动作变体"
       }
     },
     {
-      "appid": 753640,
-      "name": "Outer Wilds",
-      "url": "https://store.steampowered.com/app/753640/",
-      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/753640/079ae4a7ff4b5875adc5c63c4c0b84e5a3e6966b/header.jpg?t=1779137571",
-      "short_description": "Named Game of the Year 2019 by Giant Bomb, Polygon, Eurogamer, and The Guardian, Outer Wilds is a critically-acclaimed and award-winning open world mystery about a solar system trapped in an endless time loop.",
-      "developer": "Mobius Digital",
-      "publisher": "Annapurna Interactive",
+      "appid": 4197610,
+      "name": "Librarian: Tidy Up the Arcane Library!",
+      "url": "https://store.steampowered.com/app/4197610/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4197610/2162be8e12b6bcbf696e508a4b6297c378c33bda/header.jpg?t=1777553917",
+      "short_description": "Librarian: Tidy Up the Arcane Library! is a single-player simulation. You need return scattered books to proper places in an Arcane Library. As completed rows of bookshelves, you can learn ability to improve your efficiency. Use your skills and strategies to shelve 3,072 books as quick as you can.",
+      "developer": "ArtRising",
+      "publisher": "ArtRising",
       "genres": [
-        "Action",
-        "Adventure"
-      ],
-      "top_tags": [
-        "Exploration",
-        "Space",
-        "Mystery",
-        "Story Rich",
-        "Adventure",
-        "Great Soundtrack",
-        "Atmospheric",
-        "Puzzle",
-        "Open World",
-        "Singleplayer",
+        "Casual",
         "Indie",
-        "Sci-fi",
-        "Horror",
-        "First-Person",
-        "Beautiful"
+        "Simulation"
       ],
-      "release_date": "18 Jun, 2020",
-      "price": "CDN$ 16.49",
+      "top_tags": [],
+      "release_date": "Apr 30, 2026",
+      "price": "$5.99",
       "rank": null,
       "source": "popular_new,top_sellers,trending",
-      "heat_score": 240,
+      "heat_score": 328,
       "indie_confidence": "high",
       "indie_reason": "Steam marks it as Indie and no large publisher matched",
       "analysis": {
         "gameplay_tags": [
-          "解谜",
-          "恐怖",
-          "开放世界"
+          "模拟"
         ],
-        "hook": "Named Game of the Year 2019 by Giant Bomb, Polygon, Eurogamer, and The Guardian, Outer Wi...",
-        "formula": "解谜 + 恐怖 + 开放世界",
-        "trend_category": "生存建造热"
+        "hook": "Librarian: Tidy Up the Arcane Library! is a single-player simulation. You need return sca...",
+        "formula": "模拟",
+        "trend_category": "自动化与经营模拟"
       }
     },
     {
-      "appid": 294100,
-      "name": "RimWorld",
-      "url": "https://store.steampowered.com/app/294100/",
-      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/294100/76e0613b8197327299d5dbabb0a7fd7828a689a2/header.jpg?t=1780420333",
-      "short_description": "A sci-fi colony sim driven by an intelligent AI storyteller. Generates stories by simulating psychology, ecology, gunplay, melee combat, climate, biomes, diplomacy, interpersonal relationships, art, medicine, trade, and more.",
-      "developer": "Ludeon Studios",
-      "publisher": "Ludeon Studios",
+      "appid": 3124540,
+      "name": "Far Far West",
+      "url": "https://store.steampowered.com/app/3124540/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3124540/2d55092d45b1784dcc7cb0ba6ad3f919e62eb5d0/header.jpg?t=1780491814",
+      "short_description": "Yee-haw, Cowboys! Team up in this chaotic 1-4 player co-op shooter. Journey to the Far Far West to blast monsters, sling spells, complete missions, and collect bounties. Work as a team to get in, get paid and get out (mostly) alive.",
+      "developer": "Evil Raptor",
+      "publisher": "Fireshine Games",
       "genres": [
+        "Action",
+        "Adventure",
+        "Indie",
+        "Early Access"
+      ],
+      "top_tags": [],
+      "release_date": "Apr 28, 2026",
+      "price": "$19.99",
+      "rank": null,
+      "source": "popular_new,top_sellers,trending",
+      "heat_score": 320,
+      "indie_confidence": "high",
+      "indie_reason": "Steam marks it as Indie and no large publisher matched",
+      "analysis": {
+        "gameplay_tags": [
+          "Action",
+          "Adventure",
+          "Indie",
+          "Early Access"
+        ],
+        "hook": "Yee-haw, Cowboys! Team up in this chaotic 1-4 player co-op shooter. Journey to the Far Fa...",
+        "formula": "Action + Adventure + Indie",
+        "trend_category": "高强度动作变体"
+      }
+    },
+    {
+      "appid": 526870,
+      "name": "Satisfactory",
+      "url": "https://store.steampowered.com/app/526870/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/526870/header.jpg?t=1780413533",
+      "short_description": "Satisfactory is a first-person open-world factory building game with a dash of exploration and combat. Play alone or with friends, explore an alien planet, create multi-story factories, and enter conveyor belt heaven!",
+      "developer": "Coffee Stain Studios",
+      "publisher": "Coffee Stain Publishing",
+      "genres": [
+        "Adventure",
         "Indie",
         "Simulation",
         "Strategy"
       ],
       "top_tags": [
-        "Colony Sim",
         "Base-Building",
-        "Survival",
-        "Strategy",
-        "Sandbox",
-        "Management",
-        "Building",
-        "Simulation",
-        "Moddable",
-        "Singleplayer",
-        "City Builder",
+        "Automation",
         "Open World",
-        "Procedural Generation",
-        "2D",
-        "Sci-fi"
+        "Multiplayer",
+        "Crafting",
+        "Co-op",
+        "Building",
+        "Resource Management",
+        "Sandbox",
+        "Exploration",
+        "Adventure",
+        "Open World Survival Craft",
+        "Survival",
+        "First-Person",
+        "Simulation"
       ],
-      "release_date": "17 Oct, 2018",
-      "price": "CDN$ 39.99",
+      "release_date": "10 Sep, 2024",
+      "price": "27,29€",
       "rank": null,
       "source": "popular_new,top_sellers,trending",
-      "heat_score": 227,
+      "heat_score": 315,
       "indie_confidence": "high",
       "indie_reason": "Steam marks it as Indie and no large publisher matched",
       "analysis": {
         "gameplay_tags": [
           "生存",
+          "制作建造",
+          "自动化",
           "经营管理",
-          "模拟",
-          "城市建造",
-          "策略"
+          "模拟"
         ],
-        "hook": "A sci-fi colony sim driven by an intelligent AI storyteller. Generates stories by simulat...",
-        "formula": "生存 + 经营管理 + 模拟",
+        "hook": "Satisfactory is a first-person open-world factory building game with a dash of exploratio...",
+        "formula": "生存 + 制作建造 + 自动化",
         "trend_category": "生存建造热"
+      }
+    },
+    {
+      "appid": 1371980,
+      "name": "No Rest for the Wicked",
+      "url": "https://store.steampowered.com/app/1371980/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1371980/331de7e745f43867f0a220339153ac6019822ea4/header.jpg?t=1780442295",
+      "short_description": "From Moon Studios, the award-winning creators of Ori and the Blind Forest and Ori and the Will of the Wisps, comes No Rest for the Wicked, a unique, visceral Action RPG set in a hand-crafted world with Souls-like combat. Featuring co-op for up to four players.",
+      "developer": "Moon Studios GmbH",
+      "publisher": "Moon Studios GmbH",
+      "genres": [
+        "Action",
+        "Adventure",
+        "RPG",
+        "Early Access"
+      ],
+      "top_tags": [
+        "Early Access",
+        "Open World",
+        "Souls-like",
+        "Action RPG",
+        "Combat",
+        "Cinematic",
+        "Exploration",
+        "Hack and Slash",
+        "Colorful",
+        "Immersive Sim",
+        "Character Customization",
+        "RPG",
+        "3D",
+        "Isometric",
+        "Controller"
+      ],
+      "release_date": "18 Apr, 2024",
+      "price": "27,99€",
+      "rank": null,
+      "source": "popular_new,top_sellers,trending",
+      "heat_score": 314,
+      "indie_confidence": "medium",
+      "indie_reason": "small publisher with indie-range price",
+      "analysis": {
+        "gameplay_tags": [
+          "类魂",
+          "开放世界"
+        ],
+        "hook": "From Moon Studios, the award-winning creators of Ori and the Blind Forest and Ori and the...",
+        "formula": "类魂 + 开放世界",
+        "trend_category": "生存建造热"
+      }
+    },
+    {
+      "appid": 3404260,
+      "name": "Dead as Disco",
+      "url": "https://store.steampowered.com/app/3404260/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3404260/ae0f4b71735adf4f2494ecb7914fcbafee215277/header.jpg?t=1778694984",
+      "short_description": "Martial arts meets music video in Dead as Disco, a neon-drenched Beat ‘Em Up where every punch, kick, and combo syncs to the music. Join Charlie Disco on a quest to confront the villainous Idols and reunite the band.",
+      "developer": "Brain Jar Games, Inc.",
+      "publisher": "Brain Jar Games, Inc.",
+      "genres": [
+        "Action",
+        "Indie",
+        "Early Access"
+      ],
+      "top_tags": [],
+      "release_date": "5 May, 2026",
+      "price": "23,79€",
+      "rank": null,
+      "source": "popular_new,top_sellers,trending",
+      "heat_score": 287,
+      "indie_confidence": "high",
+      "indie_reason": "Steam marks it as Indie and no large publisher matched",
+      "analysis": {
+        "gameplay_tags": [
+          "Action",
+          "Indie",
+          "Early Access"
+        ],
+        "hook": "Martial arts meets music video in Dead as Disco, a neon-drenched Beat ‘Em Up where every...",
+        "formula": "Action + Indie + Early Access",
+        "trend_category": "高强度动作变体"
+      }
+    },
+    {
+      "appid": 3241660,
+      "name": "R.E.P.O.",
+      "url": "https://store.steampowered.com/app/3241660/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3241660/a12c92856b71315da885924ea5e1d5290c8025b8/header_alt_assets_2.jpg?t=1778158882",
+      "short_description": "An online co-op horror game with up to 6 players. Locate valuable, fully physics-based objects and handle them with care as you retrieve and extract to satisfy your creator's desires.",
+      "developer": "semiwork",
+      "publisher": "semiwork",
+      "genres": [
+        "Action",
+        "Early Access"
+      ],
+      "top_tags": [
+        "Horror",
+        "Online Co-Op",
+        "Multiplayer",
+        "Comedy",
+        "Co-op",
+        "Physics",
+        "3D",
+        "First-Person",
+        "Stealth",
+        "Action",
+        "Robots",
+        "Survival",
+        "Exploration",
+        "Action Roguelike",
+        "Procedural Generation"
+      ],
+      "release_date": "26 Feb, 2025",
+      "price": "9,49€",
+      "rank": null,
+      "source": "popular_new,top_sellers,trending",
+      "heat_score": 283,
+      "indie_confidence": "medium",
+      "indie_reason": "small publisher with indie-range price",
+      "analysis": {
+        "gameplay_tags": [
+          "Roguelike",
+          "生存",
+          "恐怖",
+          "合作",
+          "多人联机"
+        ],
+        "hook": "An online co-op horror game with up to 6 players. Locate valuable, fully physics-based ob...",
+        "formula": "Roguelike + 生存 + 恐怖",
+        "trend_category": "Roguelike 与卡牌变体"
       }
     }
   ]
