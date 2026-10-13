@@ -1,48 +1,208 @@
 {
-  "generated_at": "2026-10-06T16:29:16Z",
-  "week_of": "2026-10-06",
-  "release_window_start": "2026-09-29",
-  "release_window_end": "2026-10-06",
+  "generated_at": "2026-10-13T17:20:54Z",
+  "week_of": "2026-10-13",
+  "release_window_start": "2026-10-06",
+  "release_window_end": "2026-10-13",
   "total_checked": 90,
-  "total_indie": 1,
+  "total_indie": 6,
   "used_ai": false,
   "scope": "this_week_hot_indie_only",
   "excluded": "AAA and large-publisher games",
   "trend_summary": [
     [
+      "高强度动作变体",
+      3
+    ],
+    [
       "自动化与经营模拟",
+      2
+    ],
+    [
+      "策略解谜混合",
       1
     ]
   ],
   "games": [
     {
-      "appid": 1488490,
-      "name": "Nivalis Nights",
-      "url": "https://store.steampowered.com/app/1488490/",
-      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1488490/28e511ff46672f9649744961fd6edbf19df75265/header.jpg?t=1790855080",
-      "short_description": "Grow your business, manage restaurants and nightclubs, make friends and enemies, buy and decorate apartments, go fishing and maybe even find love in a cyberpunk city that stretches from the ocean to the clouds.",
-      "developer": "ION LANDS",
-      "publisher": "505 Games",
+      "appid": 3219030,
+      "name": "Planet Zoo 2",
+      "url": "https://store.steampowered.com/app/3219030/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3219030/a5131aa4b84d04a55e3b9c561d7c886cc22bbe1c/header.jpg?t=1791901018",
+      "short_description": "Build a wilder world in Planet Zoo 2. Create distinctive zoos around the globe filled with awe-inspiring animals, including fully aquatic and flying species, before taking your experience beyond the zoo to release your animals into expansive Wildlife Reserves.",
+      "developer": "Frontier Developments",
+      "publisher": "Frontier Developments",
       "genres": [
-        "Adventure",
-        "RPG",
-        "Simulation"
+        "Simulation",
+        "Strategy"
       ],
       "top_tags": [],
-      "release_date": "Sep 29, 2026",
-      "price": "$22.49",
+      "release_date": "13 Oct, 2026",
+      "price": "$22.99 USD",
       "rank": null,
       "source": "popular_new,top_sellers,trending",
-      "heat_score": 221,
+      "heat_score": 460,
+      "indie_confidence": "medium",
+      "indie_reason": "small publisher with indie-range price",
+      "analysis": {
+        "gameplay_tags": [
+          "模拟",
+          "策略"
+        ],
+        "hook": "Build a wilder world in Planet Zoo 2. Create distinctive zoos around the globe filled wit...",
+        "formula": "模拟 + 策略",
+        "trend_category": "自动化与经营模拟"
+      }
+    },
+    {
+      "appid": 1551980,
+      "name": "Clive Barker's Hellraiser: Revival",
+      "url": "https://store.steampowered.com/app/1551980/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1551980/d1e7111b93b6a8b3eb029908887648348c2c55e6/header.jpg?t=1791462446",
+      "short_description": "Experience a new chapter in the legendary horror series like never before. Clive Barker's Hellraiser: Revival takes first-person action horror survival to the next level. Wield the powers of the Genesis Configuration puzzle box to survive your bargain with the infamous Pinhead.",
+      "developer": "Saber Interactive",
+      "publisher": "Saber Interactive",
+      "genres": [
+        "Action"
+      ],
+      "top_tags": [],
+      "release_date": "Oct 8, 2026",
+      "price": "$39.99",
+      "rank": null,
+      "source": "popular_new,top_sellers,trending",
+      "heat_score": 424,
+      "indie_confidence": "medium",
+      "indie_reason": "small publisher with indie-range price",
+      "analysis": {
+        "gameplay_tags": [
+          "Action"
+        ],
+        "hook": "Experience a new chapter in the legendary horror series like never before. Clive Barker's...",
+        "formula": "Action",
+        "trend_category": "高强度动作变体"
+      }
+    },
+    {
+      "appid": 2254990,
+      "name": "Permafrost",
+      "url": "https://store.steampowered.com/app/2254990/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2254990/693eff202c061aaecba330b44d76485a672bea97/header.jpg?t=1791608052",
+      "short_description": "Permafrost is a story-driven survival sandbox set in a frozen, post-apocalyptic world. Discover a vast lore-rich open world, alone or in co-op with up to 4 players. Explore, scavenge, craft, and build a network of shelters to outlast the cold.",
+      "developer": "SpaceRocket Games",
+      "publisher": "Toplitz Productions",
+      "genres": [
+        "Action",
+        "Adventure",
+        "RPG",
+        "Simulation",
+        "Early Access"
+      ],
+      "top_tags": [],
+      "release_date": "Oct 9, 2026",
+      "price": "$19.99",
+      "rank": null,
+      "source": "popular_new,top_sellers,trending",
+      "heat_score": 269,
       "indie_confidence": "medium",
       "indie_reason": "small publisher with indie-range price",
       "analysis": {
         "gameplay_tags": [
           "模拟"
         ],
-        "hook": "Grow your business, manage restaurants and nightclubs, make friends and enemies, buy and...",
+        "hook": "Permafrost is a story-driven survival sandbox set in a frozen, post-apocalyptic world. Di...",
         "formula": "模拟",
         "trend_category": "自动化与经营模拟"
+      }
+    },
+    {
+      "appid": 5155360,
+      "name": "Hood Warfare 2",
+      "url": "https://store.steampowered.com/app/5155360/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5155360/73c77dc5efdbffef90c2d32324d518e68a18fc4b/header.jpg?t=1791686243",
+      "short_description": "Rival gangs fight for control of Chicago. Pick a side, customize your weapons, and fight other players across a variety of action-packed game modes. Spin the block and take over the streets in this chaotic multiplayer FPS.",
+      "developer": "Trapstar Games",
+      "publisher": "Trapstar Games",
+      "genres": [
+        "Action"
+      ],
+      "top_tags": [],
+      "release_date": "Oct 8, 2026",
+      "price": "$5.39",
+      "rank": null,
+      "source": "top_sellers,trending",
+      "heat_score": 268,
+      "indie_confidence": "medium",
+      "indie_reason": "small publisher with indie-range price",
+      "analysis": {
+        "gameplay_tags": [
+          "Action"
+        ],
+        "hook": "Rival gangs fight for control of Chicago. Pick a side, customize your weapons, and fight...",
+        "formula": "Action",
+        "trend_category": "高强度动作变体"
+      }
+    },
+    {
+      "appid": 499170,
+      "name": "Order of the Sinking Star",
+      "url": "https://store.steampowered.com/app/499170/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/499170/deda420d9e42288f4734a068c707f4c156203969/header.jpg?t=1791706750",
+      "short_description": "From director Jonathan Blow (Braid, The Witness), Order of the Sinking Star is a massive puzzle adventure set in a realm of magic and enigma. Solve over 1000 interconnected, hand-crafted puzzles, discover unique playable heroes, master evolving gameplay mechanics, and decipher a grand mystery.",
+      "developer": "Thekla, Inc.",
+      "publisher": "Arc Games, Gamirror Games",
+      "genres": [
+        "Adventure",
+        "Indie",
+        "Strategy"
+      ],
+      "top_tags": [],
+      "release_date": "8 Oct, 2026",
+      "price": "30,49€",
+      "rank": null,
+      "source": "popular_new,top_sellers,trending",
+      "heat_score": 261,
+      "indie_confidence": "high",
+      "indie_reason": "Steam marks it as Indie and no large publisher matched",
+      "analysis": {
+        "gameplay_tags": [
+          "策略"
+        ],
+        "hook": "From director Jonathan Blow (Braid, The Witness), Order of the Sinking Star is a massive...",
+        "formula": "策略",
+        "trend_category": "策略解谜混合"
+      }
+    },
+    {
+      "appid": 2333000,
+      "name": "Silver Pines",
+      "url": "https://store.steampowered.com/app/2333000/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2333000/2ce661be5b6e60b8fcc92ecdf3f9dc2dca2a9037/header.jpg?t=1791897978",
+      "short_description": "Silver Pines is a survival horror metroidvania set in small town America. Fight nightmarish terrors and solve puzzles, while carefully managing your scarce resources as you uncover the mysteries that could hold the key to redemption.",
+      "developer": "Wych Elm",
+      "publisher": "Team17",
+      "genres": [
+        "Action",
+        "Adventure",
+        "Indie",
+        "RPG"
+      ],
+      "top_tags": [],
+      "release_date": "Oct 8, 2026",
+      "price": "$22.49",
+      "rank": null,
+      "source": "popular_new,top_sellers,trending",
+      "heat_score": 250,
+      "indie_confidence": "high",
+      "indie_reason": "Steam marks it as Indie and no large publisher matched",
+      "analysis": {
+        "gameplay_tags": [
+          "Action",
+          "Adventure",
+          "Indie",
+          "RPG"
+        ],
+        "hook": "Silver Pines is a survival horror metroidvania set in small town America. Fight nightmari...",
+        "formula": "Action + Adventure + Indie",
+        "trend_category": "高强度动作变体"
       }
     }
   ]
