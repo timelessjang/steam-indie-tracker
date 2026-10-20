@@ -1,0 +1,175 @@
+{
+  "generated_at": "2026-10-20T14:39:20Z",
+  "week_of": "2026-10-20",
+  "release_window_start": "2026-10-13",
+  "release_window_end": "2026-10-20",
+  "total_checked": 90,
+  "total_indie": 4,
+  "used_ai": false,
+  "scope": "this_week_hot_indie_only",
+  "excluded": "AAA and large-publisher games",
+  "trend_summary": [
+    [
+      "自动化与经营模拟",
+      2
+    ],
+    [
+      "生存建造热",
+      1
+    ],
+    [
+      "高强度动作变体",
+      1
+    ]
+  ],
+  "games": [
+    {
+      "appid": 1203620,
+      "name": "Enshrouded",
+      "url": "https://store.steampowered.com/app/1203620/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1203620/98ca939f51b39bdd41e0e9198a9ccf8421148770/header_alt_assets_2.jpg?t=1792078032",
+      "short_description": "Enshrouded is a solo and co-op survival action RPG where your freedom and creativity come first. Conquer the Shroud, a corrupting fog devouring the kingdom of Embervale: explore a handcrafted world full of secrets, forge your hero your way, and build anything, anywhere in a fully terraformable land.",
+      "developer": "Keen Games GmbH",
+      "publisher": "Keen Games GmbH",
+      "genres": [
+        "Action",
+        "Adventure",
+        "Indie",
+        "RPG"
+      ],
+      "top_tags": [
+        "Open World",
+        "Survival",
+        "Base-Building",
+        "Multiplayer",
+        "Online Co-Op",
+        "Crafting",
+        "RPG",
+        "Adventure",
+        "Action RPG",
+        "Exploration",
+        "Building",
+        "Singleplayer",
+        "Fantasy",
+        "Sandbox",
+        "Character Customization"
+      ],
+      "release_date": "15 Oct, 2026",
+      "price": "₩ 38,610",
+      "rank": 9,
+      "source": "weekly_top_sellers,popular_new,top_sellers,trending",
+      "heat_score": 666,
+      "indie_confidence": "high",
+      "indie_reason": "Steam marks it as Indie and no large publisher matched",
+      "analysis": {
+        "gameplay_tags": [
+          "生存",
+          "制作建造",
+          "开放世界",
+          "沙盒",
+          "合作"
+        ],
+        "hook": "Enshrouded is a solo and co-op survival action RPG where your freedom and creativity come...",
+        "formula": "生存 + 制作建造 + 开放世界",
+        "trend_category": "生存建造热"
+      }
+    },
+    {
+      "appid": 2929250,
+      "name": "over the hill",
+      "url": "https://store.steampowered.com/app/2929250/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2929250/header.jpg?t=1792002879",
+      "short_description": "Explore the world in the golden age of offroading. Drive iconic 4x4 vehicles from the 60s to 80s by yourself or with friends through challenging trails and beautiful scenery.",
+      "developer": "Funselektor Labs Inc.",
+      "publisher": "Funselektor Labs Inc.",
+      "genres": [
+        "Adventure",
+        "Casual",
+        "Indie",
+        "Racing",
+        "Simulation",
+        "Sports"
+      ],
+      "top_tags": [],
+      "release_date": "Oct 14, 2026",
+      "price": "$19.99",
+      "rank": null,
+      "source": "popular_new,top_sellers,trending",
+      "heat_score": 424,
+      "indie_confidence": "high",
+      "indie_reason": "Steam marks it as Indie and no large publisher matched",
+      "analysis": {
+        "gameplay_tags": [
+          "模拟"
+        ],
+        "hook": "Explore the world in the golden age of offroading. Drive iconic 4x4 vehicles from the 60s...",
+        "formula": "模拟",
+        "trend_category": "自动化与经营模拟"
+      }
+    },
+    {
+      "appid": 4954910,
+      "name": "Scam With Your Friends",
+      "url": "https://store.steampowered.com/app/4954910/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4954910/128effac3212fc1b92b4f6cd8891995df0d4b199/header.jpg?t=1792469490",
+      "short_description": "Run a scam call center with your friends. Use increasingly ridiculous schemes to trick AI callers out of their life savings. Hit your daily quota, cause chaos around the office, and survive a brutal performance review from your rageaholic boss.",
+      "developer": "JakeHub, Metater",
+      "publisher": "Jatater Worldwide",
+      "genres": [
+        "Action",
+        "Casual",
+        "Indie",
+        "Simulation",
+        "Early Access"
+      ],
+      "top_tags": [],
+      "release_date": "Oct 15, 2026",
+      "price": "$8.99",
+      "rank": null,
+      "source": "top_sellers,trending",
+      "heat_score": 261,
+      "indie_confidence": "high",
+      "indie_reason": "Steam marks it as Indie and no large publisher matched",
+      "analysis": {
+        "gameplay_tags": [
+          "模拟"
+        ],
+        "hook": "Run a scam call center with your friends. Use increasingly ridiculous schemes to trick AI...",
+        "formula": "模拟",
+        "trend_category": "自动化与经营模拟"
+      }
+    },
+    {
+      "appid": 2828710,
+      "name": "Valor Mortis",
+      "url": "https://store.steampowered.com/app/2828710/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2828710/e729c7f909db5c52ea780923d9b258517162866a/header.jpg?t=1791924072",
+      "short_description": "Valor Mortis is a first-person action soulslike from the creators of Ghostrunner. Rise from death as a former soldier of Napoleon’s army. Wield supernatural powers, battle horrifying monsters, and unravel a conspiracy that threatens all of humanity.",
+      "developer": "One More Level",
+      "publisher": "Lyrical Games, One More Level",
+      "genres": [
+        "Action",
+        "Adventure",
+        "RPG"
+      ],
+      "top_tags": [],
+      "release_date": "Oct 13, 2026",
+      "price": "$39.99",
+      "rank": null,
+      "source": "popular_new,top_sellers,trending",
+      "heat_score": 221,
+      "indie_confidence": "medium",
+      "indie_reason": "small publisher with indie-range price",
+      "analysis": {
+        "gameplay_tags": [
+          "Action",
+          "Adventure",
+          "RPG"
+        ],
+        "hook": "Valor Mortis is a first-person action soulslike from the creators of Ghostrunner. Rise fr...",
+        "formula": "Action + Adventure + RPG",
+        "trend_category": "高强度动作变体"
+      }
+    }
+  ]
+}
