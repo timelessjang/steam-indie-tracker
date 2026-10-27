@@ -1,0 +1,82 @@
+{
+  "generated_at": "2026-10-27T15:42:36Z",
+  "week_of": "2026-10-27",
+  "release_window_start": "2026-10-20",
+  "release_window_end": "2026-10-27",
+  "total_checked": 90,
+  "total_indie": 2,
+  "used_ai": false,
+  "scope": "this_week_hot_indie_only",
+  "excluded": "AAA and large-publisher games",
+  "trend_summary": [
+    [
+      "自动化与经营模拟",
+      2
+    ]
+  ],
+  "games": [
+    {
+      "appid": 5335510,
+      "name": "Moon Sweepers",
+      "url": "https://store.steampowered.com/app/5335510/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5335510/41e1e802dfc069cc245b91043e451a2f9ffa80e3/header.jpg?t=1792950881",
+      "short_description": "An entire Moon to clean. One toothbrush to start. Team up with up to 16 players, collect and sell lunar dust, upgrade your tools, and unlock cleaning vehicles. Turn a ridiculous job into a thriving operation, if your friends actually help.",
+      "developer": "DragDrop Games",
+      "publisher": "DragDrop Games",
+      "genres": [
+        "Action",
+        "Adventure",
+        "Casual",
+        "Indie",
+        "Simulation",
+        "Strategy"
+      ],
+      "top_tags": [],
+      "release_date": "Oct 23, 2026",
+      "price": "$7.64",
+      "rank": null,
+      "source": "popular_new,top_sellers,trending",
+      "heat_score": 429,
+      "indie_confidence": "high",
+      "indie_reason": "Steam marks it as Indie and no large publisher matched",
+      "analysis": {
+        "gameplay_tags": [
+          "模拟",
+          "策略"
+        ],
+        "hook": "An entire Moon to clean. One toothbrush to start. Team up with up to 16 players, collect...",
+        "formula": "模拟 + 策略",
+        "trend_category": "自动化与经营模拟"
+      }
+    },
+    {
+      "appid": 4312190,
+      "name": "CRACK",
+      "url": "https://store.steampowered.com/app/4312190/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4312190/9dfa7d4efdcc88aa5663a31f02633391eb5ef843/header.jpg?t=1793035699",
+      "short_description": "Why is there a giant egg in this lab? Your job is simple: crack it open. Don't ask questions. CRACK is a 1-4 player co-op incremental adventure about uncovering what's inside a mysterious giant egg.",
+      "developer": "Rafoli",
+      "publisher": "Rafoli",
+      "genres": [
+        "Adventure",
+        "Simulation"
+      ],
+      "top_tags": [],
+      "release_date": "26 Oct, 2026",
+      "price": "6,79€",
+      "rank": null,
+      "source": "top_sellers",
+      "heat_score": 149,
+      "indie_confidence": "medium",
+      "indie_reason": "small publisher with indie-range price",
+      "analysis": {
+        "gameplay_tags": [
+          "模拟"
+        ],
+        "hook": "Why is there a giant egg in this lab? Your job is simple: crack it open. Don't ask questi...",
+        "formula": "模拟",
+        "trend_category": "自动化与经营模拟"
+      }
+    }
+  ]
+}
