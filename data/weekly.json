@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-27T15:42:36Z",
-  "week_of": "2026-10-27",
-  "release_window_start": "2026-10-20",
-  "release_window_end": "2026-10-27",
+  "generated_at": "2026-11-03T17:31:13Z",
+  "week_of": "2026-11-03",
+  "release_window_start": "2026-10-27",
+  "release_window_end": "2026-11-03",
   "total_checked": 90,
-  "total_indie": 2,
+  "total_indie": 4,
   "used_ai": false,
   "scope": "this_week_hot_indie_only",
   "excluded": "AAA and large-publisher games",
@@ -12,31 +12,33 @@
     [
       "自动化与经营模拟",
       2
+    ],
+    [
+      "高强度动作变体",
+      2
     ]
   ],
   "games": [
     {
-      "appid": 5335510,
-      "name": "Moon Sweepers",
-      "url": "https://store.steampowered.com/app/5335510/",
-      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5335510/41e1e802dfc069cc245b91043e451a2f9ffa80e3/header.jpg?t=1792950881",
-      "short_description": "An entire Moon to clean. One toothbrush to start. Team up with up to 16 players, collect and sell lunar dust, upgrade your tools, and unlock cleaning vehicles. Turn a ridiculous job into a thriving operation, if your friends actually help.",
-      "developer": "DragDrop Games",
-      "publisher": "DragDrop Games",
+      "appid": 4348910,
+      "name": "Probably Stolen - Cyberpunk Shopkeeper Sim",
+      "url": "https://store.steampowered.com/app/4348910/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4348910/b241a3bc1cb144e70a4840157e127212738ea5b3/header_alt_assets_3.jpg?t=1793711740",
+      "short_description": "Probably Stolen is a cyberpunk shopkeeping simulator set in a dystopian space station. Craft, trade, and smuggle goods of questionable origin, navigate faction loyalties, and decide how far you’re willing to go to stay afloat. Earn enough to buy out your shop before rising rent forces your hand.",
+      "developer": "Questing Goose Studio",
+      "publisher": "tinyBuild",
       "genres": [
-        "Action",
-        "Adventure",
-        "Casual",
         "Indie",
+        "RPG",
         "Simulation",
         "Strategy"
       ],
       "top_tags": [],
-      "release_date": "Oct 23, 2026",
-      "price": "$7.64",
-      "rank": null,
-      "source": "popular_new,top_sellers,trending",
-      "heat_score": 429,
+      "release_date": "28 Oct, 2026",
+      "price": "NT$ 251",
+      "rank": 7,
+      "source": "weekly_top_sellers,popular_new,top_sellers,trending",
+      "heat_score": 667,
       "indie_confidence": "high",
       "indie_reason": "Steam marks it as Indie and no large publisher matched",
       "analysis": {
@@ -44,38 +46,105 @@
           "模拟",
           "策略"
         ],
-        "hook": "An entire Moon to clean. One toothbrush to start. Team up with up to 16 players, collect...",
+        "hook": "Probably Stolen is a cyberpunk shopkeeping simulator set in a dystopian space station. Cr...",
         "formula": "模拟 + 策略",
         "trend_category": "自动化与经营模拟"
       }
     },
     {
-      "appid": 4312190,
-      "name": "CRACK",
-      "url": "https://store.steampowered.com/app/4312190/",
-      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4312190/9dfa7d4efdcc88aa5663a31f02633391eb5ef843/header.jpg?t=1793035699",
-      "short_description": "Why is there a giant egg in this lab? Your job is simple: crack it open. Don't ask questions. CRACK is a 1-4 player co-op incremental adventure about uncovering what's inside a mysterious giant egg.",
-      "developer": "Rafoli",
-      "publisher": "Rafoli",
+      "appid": 1799840,
+      "name": "Queen's Domain",
+      "url": "https://store.steampowered.com/app/1799840/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1799840/1a209734951f53b019ec9fa03f835def14f2a968/header.jpg?t=1793628353",
+      "short_description": "A retro-fantasy action RPG with brutal combat and traversal-focused exploration. Embark on a quest to find your father who disappeared on the mysterious Isle of Neasied, where sinister forces gather, secrets hide everywhere, and the sleeping Queen has begun to stir…",
+      "developer": "Freshly Baked Games LLC",
+      "publisher": "Future Friends Games",
       "genres": [
+        "Action",
         "Adventure",
-        "Simulation"
+        "Indie",
+        "RPG"
       ],
       "top_tags": [],
-      "release_date": "26 Oct, 2026",
-      "price": "6,79€",
+      "release_date": "30 Oct, 2026",
+      "price": "16,56€",
       "rank": null,
-      "source": "top_sellers",
-      "heat_score": 149,
-      "indie_confidence": "medium",
-      "indie_reason": "small publisher with indie-range price",
+      "source": "popular_new,top_sellers,trending",
+      "heat_score": 402,
+      "indie_confidence": "high",
+      "indie_reason": "Steam marks it as Indie and no large publisher matched",
+      "analysis": {
+        "gameplay_tags": [
+          "Action",
+          "Adventure",
+          "Indie",
+          "RPG"
+        ],
+        "hook": "A retro-fantasy action RPG with brutal combat and traversal-focused exploration. Embark o...",
+        "formula": "Action + Adventure + Indie",
+        "trend_category": "高强度动作变体"
+      }
+    },
+    {
+      "appid": 2223980,
+      "name": "Nomad Drive",
+      "url": "https://store.steampowered.com/app/2223980/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2223980/433d5727162af686f0e7d56de539f8476fb0cf0e/header.jpg?t=1793667805",
+      "short_description": "Repair your rundown RV and hit the road solo or in 1–4 player co-op through a procedurally generated post-apocalyptic world. Gather resources, customize your RV, and survive as long as you can.",
+      "developer": "Indie Devil",
+      "publisher": "Indie Devil",
+      "genres": [
+        "Adventure",
+        "Casual",
+        "Indie",
+        "Simulation",
+        "Early Access"
+      ],
+      "top_tags": [],
+      "release_date": "27 Oct, 2026",
+      "price": "13,04€",
+      "rank": null,
+      "source": "popular_new,top_sellers",
+      "heat_score": 167,
+      "indie_confidence": "high",
+      "indie_reason": "Steam marks it as Indie and no large publisher matched",
       "analysis": {
         "gameplay_tags": [
           "模拟"
         ],
-        "hook": "Why is there a giant egg in this lab? Your job is simple: crack it open. Don't ask questi...",
+        "hook": "Repair your rundown RV and hit the road solo or in 1–4 player co-op through a procedurall...",
         "formula": "模拟",
         "trend_category": "自动化与经营模拟"
+      }
+    },
+    {
+      "appid": 4251460,
+      "name": "Godzilla: Destroy All Monsters Melee Remastered",
+      "url": "https://store.steampowered.com/app/4251460/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4251460/28023d80b51185fe3dbadadf608523942f47238c/header.jpg?t=1793714569",
+      "short_description": "The ultimate Godzilla arena brawler is back, completely remastered. Choose your monster and battle it out with a range of brutal attacks through recreated cities and other locations. Face off against your friends and foes in local co-op or new online multiplayer.",
+      "developer": "Pipeworks Studios",
+      "publisher": "Atari",
+      "genres": [
+        "Action",
+        "Casual"
+      ],
+      "top_tags": [],
+      "release_date": "Nov 3, 2026",
+      "price": "$29.99",
+      "rank": null,
+      "source": "top_sellers",
+      "heat_score": 158,
+      "indie_confidence": "medium",
+      "indie_reason": "small publisher with indie-range price",
+      "analysis": {
+        "gameplay_tags": [
+          "Action",
+          "Casual"
+        ],
+        "hook": "The ultimate Godzilla arena brawler is back, completely remastered. Choose your monster a...",
+        "formula": "Action + Casual",
+        "trend_category": "高强度动作变体"
       }
     }
   ]
