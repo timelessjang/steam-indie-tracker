@@ -1,0 +1,265 @@
+{
+  "generated_at": "2026-11-10T17:28:57Z",
+  "week_of": "2026-11-10",
+  "release_window_start": "2026-11-03",
+  "release_window_end": "2026-11-10",
+  "total_checked": 90,
+  "total_indie": 7,
+  "used_ai": false,
+  "scope": "this_week_hot_indie_only",
+  "excluded": "AAA and large-publisher games",
+  "trend_summary": [
+    [
+      "自动化与经营模拟",
+      4
+    ],
+    [
+      "高强度动作变体",
+      2
+    ],
+    [
+      "生存建造热",
+      1
+    ]
+  ],
+  "games": [
+    {
+      "appid": 4576490,
+      "name": "Casualties: Unknown",
+      "url": "https://store.steampowered.com/app/4576490/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4576490/907888dce73f50c48410b5ab92971a0d95776b29/header.jpg?t=1794232782",
+      "short_description": "Casualties: Unknown is an unforgiving cave-exploration survival simulator. Your captors have tasked you with retrieving lost cargo on a foreign planet, explore its 11 layers and do your best to survive diverse hostile environments. You are just one of the thousands of test subjects sent to die.",
+      "developer": "Orsoniks",
+      "publisher": "Oro Interactive",
+      "genres": [
+        "Action",
+        "Adventure",
+        "Simulation"
+      ],
+      "top_tags": [],
+      "release_date": "9 Nov, 2026",
+      "price": "18,69€",
+      "rank": null,
+      "source": "popular_new,top_sellers,trending",
+      "heat_score": 419,
+      "indie_confidence": "medium",
+      "indie_reason": "small publisher with indie-range price",
+      "analysis": {
+        "gameplay_tags": [
+          "模拟"
+        ],
+        "hook": "Casualties: Unknown is an unforgiving cave-exploration survival simulator. Your captors h...",
+        "formula": "模拟",
+        "trend_category": "自动化与经营模拟"
+      }
+    },
+    {
+      "appid": 4251460,
+      "name": "Godzilla: Destroy All Monsters Melee Remastered",
+      "url": "https://store.steampowered.com/app/4251460/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4251460/28023d80b51185fe3dbadadf608523942f47238c/header.jpg?t=1793714569",
+      "short_description": "The ultimate Godzilla arena brawler is back, completely remastered. Choose your monster and battle it out with a range of brutal attacks through recreated cities and other locations. Face off against your friends and foes in local co-op or new online multiplayer.",
+      "developer": "Pipeworks Studios",
+      "publisher": "Atari",
+      "genres": [
+        "Action",
+        "Casual"
+      ],
+      "top_tags": [],
+      "release_date": "3 Nov, 2026",
+      "price": "29,99€",
+      "rank": null,
+      "source": "popular_new,top_sellers,trending",
+      "heat_score": 362,
+      "indie_confidence": "medium",
+      "indie_reason": "small publisher with indie-range price",
+      "analysis": {
+        "gameplay_tags": [
+          "Action",
+          "Casual"
+        ],
+        "hook": "The ultimate Godzilla arena brawler is back, completely remastered. Choose your monster a...",
+        "formula": "Action + Casual",
+        "trend_category": "高强度动作变体"
+      }
+    },
+    {
+      "appid": 3629430,
+      "name": "DREADMOOR",
+      "url": "https://store.steampowered.com/app/3629430/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3629430/5b80c132b3479c69a92c25a5266db523850cfc36/header.jpg?t=1794233002",
+      "short_description": "DREADMOOR is a dark first-person fishing adventure game set in a submerged world, rotting from a past catastrophe. Fish in murky waters, upgrade your boat, craft survival gear, and fight monstrous creatures that lurk under the water and on the land.",
+      "developer": "Dream Dock",
+      "publisher": "Digital Vortex Entertainment",
+      "genres": [
+        "Action",
+        "Adventure",
+        "Indie",
+        "RPG",
+        "Simulation",
+        "Early Access"
+      ],
+      "top_tags": [],
+      "release_date": "9 Nov, 2026",
+      "price": "18,44€",
+      "rank": null,
+      "source": "popular_new,top_sellers,trending",
+      "heat_score": 352,
+      "indie_confidence": "high",
+      "indie_reason": "Steam marks it as Indie and no large publisher matched",
+      "analysis": {
+        "gameplay_tags": [
+          "模拟"
+        ],
+        "hook": "DREADMOOR is a dark first-person fishing adventure game set in a submerged world, rotting...",
+        "formula": "模拟",
+        "trend_category": "自动化与经营模拟"
+      }
+    },
+    {
+      "appid": 2320980,
+      "name": "Loftia",
+      "url": "https://store.steampowered.com/app/2320980/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2320980/header.jpg?t=1794115632",
+      "short_description": "Welcome to Loftia, a cozy, multiplayer world where you can build towards a brighter, more sustainable future! Connect with friends both old and new, to farm, craft, explore, decorate, and create a meaningful impact - together.",
+      "developer": "Qloud Games",
+      "publisher": "Qloud Games",
+      "genres": [
+        "Adventure",
+        "Casual",
+        "Indie",
+        "Massively Multiplayer",
+        "RPG",
+        "Simulation",
+        "Early Access"
+      ],
+      "top_tags": [],
+      "release_date": "Nov 3, 2026",
+      "price": "$24.89",
+      "rank": null,
+      "source": "popular_new,top_sellers,trending",
+      "heat_score": 294,
+      "indie_confidence": "high",
+      "indie_reason": "Steam marks it as Indie and no large publisher matched",
+      "analysis": {
+        "gameplay_tags": [
+          "模拟",
+          "多人联机"
+        ],
+        "hook": "Welcome to Loftia, a cozy, multiplayer world where you can build towards a brighter, more...",
+        "formula": "模拟 + 多人联机",
+        "trend_category": "自动化与经营模拟"
+      }
+    },
+    {
+      "appid": 5266240,
+      "name": "Potato Please",
+      "url": "https://store.steampowered.com/app/5266240/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5266240/e289442aa6b3756109bc65b427556ea538efb849/header.jpg?t=1794167289",
+      "short_description": "A first-person potato peeling game. You have a knife. You have a bucket. You have a mountain of potatoes. Peel them with real physics. Cut thin, waste nothing. Buy better tools. Finish the pile.",
+      "developer": " Golden Horn Studios",
+      "publisher": " Golden Horn Studios",
+      "genres": [
+        "Casual",
+        "Indie",
+        "Simulation"
+      ],
+      "top_tags": [],
+      "release_date": "3 Nov, 2026",
+      "price": "8,72€",
+      "rank": null,
+      "source": "popular_new,top_sellers,trending",
+      "heat_score": 287,
+      "indie_confidence": "high",
+      "indie_reason": "Steam marks it as Indie and no large publisher matched",
+      "analysis": {
+        "gameplay_tags": [
+          "模拟"
+        ],
+        "hook": "A first-person potato peeling game. You have a knife. You have a bucket. You have a mount...",
+        "formula": "模拟",
+        "trend_category": "自动化与经营模拟"
+      }
+    },
+    {
+      "appid": 1677110,
+      "name": "Lightyear Frontier",
+      "url": "https://store.steampowered.com/app/1677110/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1677110/f4aec944f634f189990fe69e6d353b5609787955/header_alt_assets_7.jpg?t=1793891345",
+      "short_description": "Experience a relaxing open-world farming game where your mech does the heavy lifting. Build your ideal farm and automate the upkeep. Tune your mech to clear entire forests and plow vast fields, or kick back and watch the sunset with up to three friends.",
+      "developer": "FRAME BREAK",
+      "publisher": "FRAME BREAK, Coffee Stain Publishing",
+      "genres": [],
+      "top_tags": [
+        "Early Access",
+        "Online Co-Op",
+        "Singleplayer",
+        "Farming Sim",
+        "Mechs",
+        "Crafting",
+        "Casual",
+        "Relaxing",
+        "Base-Building",
+        "Exploration",
+        "Sandbox",
+        "Agriculture",
+        "Resource Management",
+        "Family Friendly",
+        "Nature"
+      ],
+      "release_date": "Nov 4, 2026",
+      "price": "$23.99",
+      "rank": null,
+      "source": "popular_new,top_sellers",
+      "heat_score": 163,
+      "indie_confidence": "medium",
+      "indie_reason": "small publisher with indie-range price",
+      "analysis": {
+        "gameplay_tags": [
+          "制作建造",
+          "农场经营",
+          "经营管理",
+          "沙盒",
+          "合作"
+        ],
+        "hook": "Experience a relaxing open-world farming game where your mech does the heavy lifting. Bui...",
+        "formula": "制作建造 + 农场经营 + 经营管理",
+        "trend_category": "生存建造热"
+      }
+    },
+    {
+      "appid": 3669620,
+      "name": "Warhammer Survivors",
+      "url": "https://store.steampowered.com/app/3669620/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3669620/dc61fccdeec6b05a58fbcdd7b1d0bbbe1f6999ea/header.jpg?t=1794319205",
+      "short_description": "Warhammer Survivors is the official grim and dark bullet-heaven game from the developers of Warhammer 40,000 Boltgun. Play as over 40 iconic champions from the Warhammer 40,000 and Warhammer Age of Sigmar universes and obliterate those who champion death and destruction.",
+      "developer": "Auroch Digital",
+      "publisher": "Auroch Digital",
+      "genres": [
+        "Action",
+        "Casual",
+        "Indie",
+        "RPG"
+      ],
+      "top_tags": [],
+      "release_date": "Nov 10, 2026",
+      "price": "$7.19",
+      "rank": null,
+      "source": "top_sellers",
+      "heat_score": 154,
+      "indie_confidence": "high",
+      "indie_reason": "Steam marks it as Indie and no large publisher matched",
+      "analysis": {
+        "gameplay_tags": [
+          "Action",
+          "Casual",
+          "Indie",
+          "RPG"
+        ],
+        "hook": "Warhammer Survivors is the official grim and dark bullet-heaven game from the developers...",
+        "formula": "Action + Casual + Indie",
+        "trend_category": "高强度动作变体"
+      }
+    }
+  ]
+}
