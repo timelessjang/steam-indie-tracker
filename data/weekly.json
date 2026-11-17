@@ -1,264 +1,148 @@
 {
-  "generated_at": "2026-11-10T17:28:57Z",
-  "week_of": "2026-11-10",
-  "release_window_start": "2026-11-03",
-  "release_window_end": "2026-11-10",
+  "generated_at": "2026-11-17T18:56:34Z",
+  "week_of": "2026-11-17",
+  "release_window_start": "2026-11-10",
+  "release_window_end": "2026-11-17",
   "total_checked": 90,
-  "total_indie": 7,
+  "total_indie": 4,
   "used_ai": false,
   "scope": "this_week_hot_indie_only",
   "excluded": "AAA and large-publisher games",
   "trend_summary": [
     [
       "自动化与经营模拟",
-      4
-    ],
-    [
-      "高强度动作变体",
       2
     ],
     [
-      "生存建造热",
+      "策略解谜混合",
+      1
+    ],
+    [
+      "独立新品综合热",
       1
     ]
   ],
   "games": [
     {
-      "appid": 4576490,
-      "name": "Casualties: Unknown",
-      "url": "https://store.steampowered.com/app/4576490/",
-      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4576490/907888dce73f50c48410b5ab92971a0d95776b29/header.jpg?t=1794232782",
-      "short_description": "Casualties: Unknown is an unforgiving cave-exploration survival simulator. Your captors have tasked you with retrieving lost cargo on a foreign planet, explore its 11 layers and do your best to survive diverse hostile environments. You are just one of the thousands of test subjects sent to die.",
-      "developer": "Orsoniks",
-      "publisher": "Oro Interactive",
+      "appid": 5185890,
+      "name": "Zombies Aren't Real",
+      "url": "https://store.steampowered.com/app/5185890/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5185890/cd54755b9d15a2cad33471464fb630d6a5363ff0/header.jpg?t=1794839706",
+      "short_description": "Zombies Aren't Real is a horde-defense, strategy game where you deploy military forces in an attempt to quell a quick-spreading zombie infection and save as many civilians as you can!",
+      "developer": "Jogamedev",
+      "publisher": "Jogamedev",
       "genres": [
-        "Action",
-        "Adventure",
-        "Simulation"
+        "Strategy",
+        "Early Access"
       ],
       "top_tags": [],
-      "release_date": "9 Nov, 2026",
-      "price": "18,69€",
+      "release_date": "Nov 13, 2026",
+      "price": "$8.99",
       "rank": null,
       "source": "popular_new,top_sellers,trending",
-      "heat_score": 419,
+      "heat_score": 400,
       "indie_confidence": "medium",
       "indie_reason": "small publisher with indie-range price",
       "analysis": {
         "gameplay_tags": [
-          "模拟"
+          "策略"
         ],
-        "hook": "Casualties: Unknown is an unforgiving cave-exploration survival simulator. Your captors h...",
-        "formula": "模拟",
-        "trend_category": "自动化与经营模拟"
+        "hook": "Zombies Aren't Real is a horde-defense, strategy game where you deploy military forces in...",
+        "formula": "策略",
+        "trend_category": "策略解谜混合"
       }
     },
     {
-      "appid": 4251460,
-      "name": "Godzilla: Destroy All Monsters Melee Remastered",
-      "url": "https://store.steampowered.com/app/4251460/",
-      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4251460/28023d80b51185fe3dbadadf608523942f47238c/header.jpg?t=1793714569",
-      "short_description": "The ultimate Godzilla arena brawler is back, completely remastered. Choose your monster and battle it out with a range of brutal attacks through recreated cities and other locations. Face off against your friends and foes in local co-op or new online multiplayer.",
-      "developer": "Pipeworks Studios",
-      "publisher": "Atari",
-      "genres": [
-        "Action",
-        "Casual"
-      ],
-      "top_tags": [],
-      "release_date": "3 Nov, 2026",
-      "price": "29,99€",
-      "rank": null,
-      "source": "popular_new,top_sellers,trending",
-      "heat_score": 362,
-      "indie_confidence": "medium",
-      "indie_reason": "small publisher with indie-range price",
-      "analysis": {
-        "gameplay_tags": [
-          "Action",
-          "Casual"
-        ],
-        "hook": "The ultimate Godzilla arena brawler is back, completely remastered. Choose your monster a...",
-        "formula": "Action + Casual",
-        "trend_category": "高强度动作变体"
-      }
-    },
-    {
-      "appid": 3629430,
-      "name": "DREADMOOR",
-      "url": "https://store.steampowered.com/app/3629430/",
-      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3629430/5b80c132b3479c69a92c25a5266db523850cfc36/header.jpg?t=1794233002",
-      "short_description": "DREADMOOR is a dark first-person fishing adventure game set in a submerged world, rotting from a past catastrophe. Fish in murky waters, upgrade your boat, craft survival gear, and fight monstrous creatures that lurk under the water and on the land.",
-      "developer": "Dream Dock",
-      "publisher": "Digital Vortex Entertainment",
-      "genres": [
-        "Action",
-        "Adventure",
-        "Indie",
-        "RPG",
-        "Simulation",
-        "Early Access"
-      ],
-      "top_tags": [],
-      "release_date": "9 Nov, 2026",
-      "price": "18,44€",
-      "rank": null,
-      "source": "popular_new,top_sellers,trending",
-      "heat_score": 352,
-      "indie_confidence": "high",
-      "indie_reason": "Steam marks it as Indie and no large publisher matched",
-      "analysis": {
-        "gameplay_tags": [
-          "模拟"
-        ],
-        "hook": "DREADMOOR is a dark first-person fishing adventure game set in a submerged world, rotting...",
-        "formula": "模拟",
-        "trend_category": "自动化与经营模拟"
-      }
-    },
-    {
-      "appid": 2320980,
-      "name": "Loftia",
-      "url": "https://store.steampowered.com/app/2320980/",
-      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2320980/header.jpg?t=1794115632",
-      "short_description": "Welcome to Loftia, a cozy, multiplayer world where you can build towards a brighter, more sustainable future! Connect with friends both old and new, to farm, craft, explore, decorate, and create a meaningful impact - together.",
-      "developer": "Qloud Games",
-      "publisher": "Qloud Games",
-      "genres": [
-        "Adventure",
-        "Casual",
-        "Indie",
-        "Massively Multiplayer",
-        "RPG",
-        "Simulation",
-        "Early Access"
-      ],
-      "top_tags": [],
-      "release_date": "Nov 3, 2026",
-      "price": "$24.89",
-      "rank": null,
-      "source": "popular_new,top_sellers,trending",
-      "heat_score": 294,
-      "indie_confidence": "high",
-      "indie_reason": "Steam marks it as Indie and no large publisher matched",
-      "analysis": {
-        "gameplay_tags": [
-          "模拟",
-          "多人联机"
-        ],
-        "hook": "Welcome to Loftia, a cozy, multiplayer world where you can build towards a brighter, more...",
-        "formula": "模拟 + 多人联机",
-        "trend_category": "自动化与经营模拟"
-      }
-    },
-    {
-      "appid": 5266240,
-      "name": "Potato Please",
-      "url": "https://store.steampowered.com/app/5266240/",
-      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5266240/e289442aa6b3756109bc65b427556ea538efb849/header.jpg?t=1794167289",
-      "short_description": "A first-person potato peeling game. You have a knife. You have a bucket. You have a mountain of potatoes. Peel them with real physics. Cut thin, waste nothing. Buy better tools. Finish the pile.",
-      "developer": " Golden Horn Studios",
-      "publisher": " Golden Horn Studios",
+      "appid": 5378110,
+      "name": "One More Lawn",
+      "url": "https://store.steampowered.com/app/5378110/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5378110/13e611ebe83aeaf0ebc0a23354e75cd2670c50ac/header.jpg?t=1794839931",
+      "short_description": "Mow lawns in first person on a beat-up riding mower, solo or online co-op up to 6 players. You're a grumpy old man who smokes, drinks cheap beer and doesn't care, but leaves perfect stripes. A picky neighbor, an abandoned golf course, an island wedding.",
+      "developer": "Superdou",
+      "publisher": "Superdou",
       "genres": [
         "Casual",
         "Indie",
         "Simulation"
       ],
       "top_tags": [],
-      "release_date": "3 Nov, 2026",
-      "price": "8,72€",
+      "release_date": "Nov 12, 2026",
+      "price": "$4.89",
       "rank": null,
       "source": "popular_new,top_sellers,trending",
-      "heat_score": 287,
+      "heat_score": 292,
       "indie_confidence": "high",
       "indie_reason": "Steam marks it as Indie and no large publisher matched",
       "analysis": {
         "gameplay_tags": [
           "模拟"
         ],
-        "hook": "A first-person potato peeling game. You have a knife. You have a bucket. You have a mount...",
+        "hook": "Mow lawns in first person on a beat-up riding mower, solo or online co-op up to 6 players...",
         "formula": "模拟",
         "trend_category": "自动化与经营模拟"
       }
     },
     {
-      "appid": 1677110,
-      "name": "Lightyear Frontier",
-      "url": "https://store.steampowered.com/app/1677110/",
-      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1677110/f4aec944f634f189990fe69e6d353b5609787955/header_alt_assets_7.jpg?t=1793891345",
-      "short_description": "Experience a relaxing open-world farming game where your mech does the heavy lifting. Build your ideal farm and automate the upkeep. Tune your mech to clear entire forests and plow vast fields, or kick back and watch the sunset with up to three friends.",
-      "developer": "FRAME BREAK",
-      "publisher": "FRAME BREAK, Coffee Stain Publishing",
-      "genres": [],
-      "top_tags": [
-        "Early Access",
-        "Online Co-Op",
-        "Singleplayer",
-        "Farming Sim",
-        "Mechs",
-        "Crafting",
-        "Casual",
-        "Relaxing",
-        "Base-Building",
-        "Exploration",
-        "Sandbox",
-        "Agriculture",
-        "Resource Management",
-        "Family Friendly",
-        "Nature"
+      "appid": 3809270,
+      "name": "Euro Truck Simulator 2 - Coaches",
+      "url": "https://store.steampowered.com/app/3809270/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3809270/76265f5ca82a7e38ef486f169108f08379785a51/header.jpg?t=1794576017",
+      "short_description": "Trade cargo for passengers in a whole new ETS2 journey! Take a seat behind the wheel – not of a truck, but of a coach. The Coaches DLC brings a new dimension to the ETS2 experience by introducing scheduled passenger transport across Europe.",
+      "developer": "SCS Software",
+      "publisher": "SCS Software",
+      "genres": [
+        "Indie",
+        "Simulation"
       ],
-      "release_date": "Nov 4, 2026",
-      "price": "$23.99",
-      "rank": null,
-      "source": "popular_new,top_sellers",
-      "heat_score": 163,
-      "indie_confidence": "medium",
-      "indie_reason": "small publisher with indie-range price",
+      "top_tags": [],
+      "release_date": "Nov 12, 2026",
+      "price": "$14.99",
+      "rank": 10,
+      "source": "weekly_top_sellers",
+      "heat_score": 210,
+      "indie_confidence": "high",
+      "indie_reason": "Steam marks it as Indie and no large publisher matched",
       "analysis": {
         "gameplay_tags": [
-          "制作建造",
-          "农场经营",
-          "经营管理",
-          "沙盒",
-          "合作"
+          "模拟"
         ],
-        "hook": "Experience a relaxing open-world farming game where your mech does the heavy lifting. Bui...",
-        "formula": "制作建造 + 农场经营 + 经营管理",
-        "trend_category": "生存建造热"
+        "hook": "Trade cargo for passengers in a whole new ETS2 journey! Take a seat behind the wheel – no...",
+        "formula": "模拟",
+        "trend_category": "自动化与经营模拟"
       }
     },
     {
-      "appid": 3669620,
-      "name": "Warhammer Survivors",
-      "url": "https://store.steampowered.com/app/3669620/",
-      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3669620/dc61fccdeec6b05a58fbcdd7b1d0bbbe1f6999ea/header.jpg?t=1794319205",
-      "short_description": "Warhammer Survivors is the official grim and dark bullet-heaven game from the developers of Warhammer 40,000 Boltgun. Play as over 40 iconic champions from the Warhammer 40,000 and Warhammer Age of Sigmar universes and obliterate those who champion death and destruction.",
-      "developer": "Auroch Digital",
-      "publisher": "Auroch Digital",
+      "appid": 3218350,
+      "name": "Melvor Idle 2: A RuneScape Adventure",
+      "url": "https://store.steampowered.com/app/3218350/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3218350/21b3f6881a12eef86b7c17b21640b396f3510f92/header.jpg?t=1794927857",
+      "short_description": "Embark on a brand-new RuneScape idle adventure with Melvor Idle 2. Master iconic RuneScape Skills, face powerful Combat challenges, or uncover the history of the world via Quests, all while enjoying zen-like progression.",
+      "developer": "Games by Malcs",
+      "publisher": "Jagex",
       "genres": [
-        "Action",
         "Casual",
         "Indie",
-        "RPG"
+        "RPG",
+        "Early Access"
       ],
       "top_tags": [],
-      "release_date": "Nov 10, 2026",
-      "price": "$7.19",
+      "release_date": "17 Nov, 2026",
+      "price": "13,04€",
       "rank": null,
       "source": "top_sellers",
-      "heat_score": 154,
+      "heat_score": 158,
       "indie_confidence": "high",
       "indie_reason": "Steam marks it as Indie and no large publisher matched",
       "analysis": {
         "gameplay_tags": [
-          "Action",
           "Casual",
           "Indie",
-          "RPG"
+          "RPG",
+          "Early Access"
         ],
-        "hook": "Warhammer Survivors is the official grim and dark bullet-heaven game from the developers...",
-        "formula": "Action + Casual + Indie",
-        "trend_category": "高强度动作变体"
+        "hook": "Embark on a brand-new RuneScape idle adventure with Melvor Idle 2. Master iconic RuneScap...",
+        "formula": "Casual + Indie + RPG",
+        "trend_category": "独立新品综合热"
       }
     }
   ]

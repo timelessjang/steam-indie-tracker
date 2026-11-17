@@ -1,0 +1,149 @@
+{
+  "generated_at": "2026-11-17T18:56:34Z",
+  "week_of": "2026-11-17",
+  "release_window_start": "2026-11-10",
+  "release_window_end": "2026-11-17",
+  "total_checked": 90,
+  "total_indie": 4,
+  "used_ai": false,
+  "scope": "this_week_hot_indie_only",
+  "excluded": "AAA and large-publisher games",
+  "trend_summary": [
+    [
+      "自动化与经营模拟",
+      2
+    ],
+    [
+      "策略解谜混合",
+      1
+    ],
+    [
+      "独立新品综合热",
+      1
+    ]
+  ],
+  "games": [
+    {
+      "appid": 5185890,
+      "name": "Zombies Aren't Real",
+      "url": "https://store.steampowered.com/app/5185890/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5185890/cd54755b9d15a2cad33471464fb630d6a5363ff0/header.jpg?t=1794839706",
+      "short_description": "Zombies Aren't Real is a horde-defense, strategy game where you deploy military forces in an attempt to quell a quick-spreading zombie infection and save as many civilians as you can!",
+      "developer": "Jogamedev",
+      "publisher": "Jogamedev",
+      "genres": [
+        "Strategy",
+        "Early Access"
+      ],
+      "top_tags": [],
+      "release_date": "Nov 13, 2026",
+      "price": "$8.99",
+      "rank": null,
+      "source": "popular_new,top_sellers,trending",
+      "heat_score": 400,
+      "indie_confidence": "medium",
+      "indie_reason": "small publisher with indie-range price",
+      "analysis": {
+        "gameplay_tags": [
+          "策略"
+        ],
+        "hook": "Zombies Aren't Real is a horde-defense, strategy game where you deploy military forces in...",
+        "formula": "策略",
+        "trend_category": "策略解谜混合"
+      }
+    },
+    {
+      "appid": 5378110,
+      "name": "One More Lawn",
+      "url": "https://store.steampowered.com/app/5378110/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5378110/13e611ebe83aeaf0ebc0a23354e75cd2670c50ac/header.jpg?t=1794839931",
+      "short_description": "Mow lawns in first person on a beat-up riding mower, solo or online co-op up to 6 players. You're a grumpy old man who smokes, drinks cheap beer and doesn't care, but leaves perfect stripes. A picky neighbor, an abandoned golf course, an island wedding.",
+      "developer": "Superdou",
+      "publisher": "Superdou",
+      "genres": [
+        "Casual",
+        "Indie",
+        "Simulation"
+      ],
+      "top_tags": [],
+      "release_date": "Nov 12, 2026",
+      "price": "$4.89",
+      "rank": null,
+      "source": "popular_new,top_sellers,trending",
+      "heat_score": 292,
+      "indie_confidence": "high",
+      "indie_reason": "Steam marks it as Indie and no large publisher matched",
+      "analysis": {
+        "gameplay_tags": [
+          "模拟"
+        ],
+        "hook": "Mow lawns in first person on a beat-up riding mower, solo or online co-op up to 6 players...",
+        "formula": "模拟",
+        "trend_category": "自动化与经营模拟"
+      }
+    },
+    {
+      "appid": 3809270,
+      "name": "Euro Truck Simulator 2 - Coaches",
+      "url": "https://store.steampowered.com/app/3809270/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3809270/76265f5ca82a7e38ef486f169108f08379785a51/header.jpg?t=1794576017",
+      "short_description": "Trade cargo for passengers in a whole new ETS2 journey! Take a seat behind the wheel – not of a truck, but of a coach. The Coaches DLC brings a new dimension to the ETS2 experience by introducing scheduled passenger transport across Europe.",
+      "developer": "SCS Software",
+      "publisher": "SCS Software",
+      "genres": [
+        "Indie",
+        "Simulation"
+      ],
+      "top_tags": [],
+      "release_date": "Nov 12, 2026",
+      "price": "$14.99",
+      "rank": 10,
+      "source": "weekly_top_sellers",
+      "heat_score": 210,
+      "indie_confidence": "high",
+      "indie_reason": "Steam marks it as Indie and no large publisher matched",
+      "analysis": {
+        "gameplay_tags": [
+          "模拟"
+        ],
+        "hook": "Trade cargo for passengers in a whole new ETS2 journey! Take a seat behind the wheel – no...",
+        "formula": "模拟",
+        "trend_category": "自动化与经营模拟"
+      }
+    },
+    {
+      "appid": 3218350,
+      "name": "Melvor Idle 2: A RuneScape Adventure",
+      "url": "https://store.steampowered.com/app/3218350/",
+      "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3218350/21b3f6881a12eef86b7c17b21640b396f3510f92/header.jpg?t=1794927857",
+      "short_description": "Embark on a brand-new RuneScape idle adventure with Melvor Idle 2. Master iconic RuneScape Skills, face powerful Combat challenges, or uncover the history of the world via Quests, all while enjoying zen-like progression.",
+      "developer": "Games by Malcs",
+      "publisher": "Jagex",
+      "genres": [
+        "Casual",
+        "Indie",
+        "RPG",
+        "Early Access"
+      ],
+      "top_tags": [],
+      "release_date": "17 Nov, 2026",
+      "price": "13,04€",
+      "rank": null,
+      "source": "top_sellers",
+      "heat_score": 158,
+      "indie_confidence": "high",
+      "indie_reason": "Steam marks it as Indie and no large publisher matched",
+      "analysis": {
+        "gameplay_tags": [
+          "Casual",
+          "Indie",
+          "RPG",
+          "Early Access"
+        ],
+        "hook": "Embark on a brand-new RuneScape idle adventure with Melvor Idle 2. Master iconic RuneScap...",
+        "formula": "Casual + Indie + RPG",
+        "trend_category": "独立新品综合热"
+      }
+    }
+  ]
+}
